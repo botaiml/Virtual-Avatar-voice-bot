@@ -1,10 +1,11 @@
 import { Canvas } from "@react-three/fiber";
 import { Experience } from "./components/Experience";
-import FaceDetection from "./components/face-recon/FaceDetection";
-import Footer from "./components/footer/Footer";
-import FaceDetect from "./components/face-recon/FcaeDetect";
-import FaceDetectWeb from "./components/face-recon/FaceDetectWeb";
-import CameraComponent from "./components/face-recon/CameraComponent";
+// import FaceDetection from "./components/face-recon/FaceDetection";
+// import Footer from "./components/footer/Footer";
+// import FaceDetect from "./components/face-recon/FcaeDetect";
+// import FaceDetectWeb from "./components/face-recon/FaceDetectWeb";
+// import CameraComponent from "./components/face-recon/CameraComponent";
+import FaceRecon from "./components/face-recon/FaceRecon";
 function App() {
   return (
     <>
@@ -34,7 +35,8 @@ function App() {
             {/* <FaceDetection /> */}
             {/* <FaceDetect/> */}
             {/* <FaceDetectWeb/> */}
-            <CameraComponent/>
+            {/* <CameraComponent/> */}
+            <FaceRecon/>
           </div>
         </div>
         {/* <Footer /> */}
