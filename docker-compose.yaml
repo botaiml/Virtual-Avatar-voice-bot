@@ -1,0 +1,18 @@
+version: '3'
+services:
+  python-app:
+    build: PythonBackend
+    volumes:
+      - "./PythonBackend:/app"
+    ports:
+      - "5172:5172"
+    command: ["sh", "-c", "python main.py && while true; do sleep 1; done"]
+
+
+  react-app:
+    build: AvatarUi
+    volumes:
+      - "./AvatarUi:/app"
+    ports:
+      - "5173:5173"
+    command: ["sh", "-c", "npm run dev && while true; do sleep 1; done"]
