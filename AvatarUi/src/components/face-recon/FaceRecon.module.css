@@ -1,0 +1,39 @@
+.appvide {
+  display: flex;
+  align-items: center;
+}
+
+.appcanvas {
+  position: absolute;
+  top: 80px;
+}
+
+.myapp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+/* .captured_face {
+  display: flex;
+  margin: 10px;
+} */
+.captured_faces {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.captured_face {
+  position: relative;
+}
+
+.delete_button {
+  position: absolute !important;
+  bottom: 5px !important;
+  left: 5px !important;
+  background-color: #ff0000 !important;
+  color: #ffffff !important;
+  padding: 4px !important; /* Adjust padding to decrease button size */
+  font-size: 12px !important; /* Adjust font size to decrease button size */
+}
