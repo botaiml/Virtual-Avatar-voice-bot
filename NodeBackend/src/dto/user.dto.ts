@@ -1,5 +1,3 @@
-// src/dto/UserDTO.ts
-
 import { User } from '../entities/User';
 
 /**

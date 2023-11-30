@@ -1,5 +1,3 @@
-// src/controllers/UserController.ts
-
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { User } from '../entities/User';
@@ -50,36 +48,31 @@ export const getUserByIndexId = async (
   }
 };
 
-export const getUsers = async (req: Request, res: Response): Promise<void> => {
-  const userRepository = getRepository(User);
-  const users = await userRepository.find();
-  const userResponseDTOs: UserResponseDTO[] = users.map((user) => ({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-  }));
-  res.json(userResponseDTOs);
-};
+// export const getUsers = async (req: Request, res: Response): Promise<void> => {
+//   const userRepository = getRepository(User);
+//   const users = await userRepository.find();
+//   const userResponseDTOs: UserResponseDTO[] = users.map((user) => ({
+//     id: user.id,
+//     name: user.name,
+//     email: user.email,
+//   }));
+//   res.json(userResponseDTOs);
+// };
 
-export const AddTwoNum = async (req: Request, res: Response): Promise<void> => {
-  const { numbA, numbB }: any = req.body;
-  const numbC = numbA + numbB;
-  res.json(numbC);
-};
 
-export const createUser = async (
-  req: Request,
-  res: Response,
-): Promise<void> => {
-  const userRepository = getRepository(User);
-  const createUserDTO: CreateUserDTO = req.body;
-  const newUser = userRepository.create(createUserDTO);
-  await userRepository.save(newUser);
+// export const createUser = async (
+//   req: Request,
+//   res: Response,
+// ): Promise<void> => {
+//   const userRepository = getRepository(User);
+//   const createUserDTO: CreateUserDTO = req.body;
+//   const newUser = userRepository.create(createUserDTO);
+//   await userRepository.save(newUser);
 
-  const userResponseDTO: UserResponseDTO = {
-    id: newUser.id,
-    name: newUser.name,
-    email: newUser.email,
-  };
-  res.json(userResponseDTO);
-};
+//   const userResponseDTO: UserResponseDTO = {
+//     id: newUser.id,
+//     name: newUser.name,
+//     email: newUser.email,
+//   };
+//   res.json(userResponseDTO);
+// };
