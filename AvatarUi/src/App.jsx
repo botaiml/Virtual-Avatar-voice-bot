@@ -14,6 +14,7 @@ import { activityName } from "./constants/activities";
 import FaceEnroll from "./components/face-enroll/FaceEnroll";
 import FaceSearch from "./components/face-search/FaceSearch";
 
+
 function App(props) {
   const [eachActivityType, seteachActivityType] = useState();
   const activity = useSelector((state) => state.activity);
@@ -70,11 +71,10 @@ function App(props) {
           }}
         >
           <div style={{ flex: "1", width: "50%", position: "relative" }}>
-            <h1>AVATAR</h1>
-            {/* <Canvas shadows camera={{ position: [0, 0, 8], fov: 42 }}>
-              <color attach="background" args={["#ececec"]} />
-              <Experience />
-            </Canvas> */}
+            {/* <h1>AVATAR</h1> */}
+              <Canvas shadows camera={{position: [0,0,8], fov:50 }}>
+                <Experience />
+              </Canvas>
           </div>
           <div style={{ flex: "1", width: "50%" }}>
             {eachActivityType && getActivity()}
