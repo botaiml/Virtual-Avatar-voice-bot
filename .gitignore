@@ -25,5 +25,5 @@ AvatarUi/public/animations/animation_6.fbx
 AvatarUi/public/audios/hello.json
 AvatarUi/public/audios/hello.mp3
 AvatarUi/public/audios/hello.ogg
-AvatarUi/public/models/Avatar.glb
+AvatarUi/public/models/*.glb
 AvatarUi/public/vite.svg

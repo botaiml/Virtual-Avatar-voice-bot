@@ -74,8 +74,8 @@ export function Avatar(props) {
     [idle_1[0], idle_2[0], idle_3[0], idle_4[0], idle_5[0], idle_6[0]],
     group
   );
-  
-const expression_que = {"smileque": [
+
+  const expression_que = {"smileque": [
     { "start": 0, "end": 1, "value": 0.3 },
     { "start": 2, "end": 4, "value": 0.6 },
     { "start": 5, "end": 6, "value": 0.4},
@@ -101,26 +101,32 @@ const expression_que = {"smileque": [
     { "start": 59, "end": 26, "value": 0.65 },
     ],
     "blinkque": [
-    { "start": 0.9, "end": 1, "value": 0 },
-    { "start": 1.2, "end": 1.2, "value": 1 },
-    { "start": 1.2, "end": 6, "value": 0},
-    { "start": 10, "end": 10, "value": 1 },
-    { "start": 10, "end": 16, "value": 0 },
-    { "start": 18, "end": 18, "value": 1 },
-    { "start": 18, "end": 20, "value": 0 },
-    { "start": 21.99, "end": 22, "value": 1 },
-    { "start": 22, "end": 26, "value": 0 },
-    { "start": 29, "end": 29, "value": 1 },
-    { "start": 29, "end": 33, "value": 0 },
-    { "start": 38., "end": 38, "value": 1 },
-    { "start": 38, "end": 44, "value": 0 },
-    { "start": 48, "end": 48, "value": 1 },
-    { "start": 48, "end": 54, "value": 0 },
-    { "start": 58, "end": 58, "value": 1 },
-    { "start": 58, "end": 60, "value": 0 },
+    { "start": 0.8, "end": 1, "value": 1 },
+    { "start": 3.8, "end": 4, "value": 0 },
+    { "start": 5.9, "end": 6, "value": 1},
+    { "start": 9.9, "end": 10, "value": 0 },
+    { "start": 15.5, "end": 16, "value": 1 },
+    { "start": 17.6, "end": 18, "value": 0 },
+    { "start": 19.5, "end": 20, "value": 1 },
+    { "start": 21.5, "end": 22, "value": 0 },
+    { "start": 25, "end": 26, "value": 1 },
+    { "start": 28.2, "end": 29, "value": 0 },
+    { "start": 32, "end": 33, "value": 1 },
+    { "start": 37.6, "end": 38, "value": 0 },
+    { "start": 43.3, "end": 44, "value": 1 },
+    { "start": 47, "end": 48, "value": 0 },
+    { "start": 53, "end": 54, "value": 1 },
+    { "start": 57, "end": 58, "value": 0 },
+    { "start": 46, "end": 47, "value": 1 },
+    { "start": 48, "end": 49, "value": 0 },
+    { "start": 50, "end": 52, "value": 1 },
+    { "start": 53, "end": 54, "value": 0 },
+    { "start": 55, "end": 56, "value": 1 },
+    { "start": 58, "end": 59, "value": 0 },
+    { "start": 59, "end": 60, "value": 1 },
   
-  ]}
-
+  ]} 
+  
   // console.log(expression_que.smile_que);
   useEffect(() => {
     actions[animation].reset().fadeIn(0.5).play();
@@ -137,14 +143,16 @@ const expression_que = {"smileque": [
 
   useFrame((state) => {
     const curr_smile_time = new Date().getSeconds();
-    console.log(curr_smile_time);
+    // if (curr_smile_time < prev_smile_time ){
+    //   setPrevTime(
+    //       0
+    //   );
+    // }
 
-  const used_keys = {
-    1: "mouthSmileRight",
-    2: "mouthSmileLeft"
-  }
+    // const time_difference = curr_smile_time - prev_smile_time;
+    // console.log(curr_smile_time);
 
-   Object.values(used_keys).forEach((value) => {
+   Object.values(expression_que.smileque).forEach((value) => {
       if (!smoothMorphTarget) {
         nodes.AvatarHead.morphTargetInfluences[
           nodes.AvatarHead.morphTargetDictionary[value]
@@ -181,7 +189,7 @@ const expression_que = {"smileque": [
         (curr_smile_time+1) >= smileCue.start &&
         (curr_smile_time+1) <= smileCue.end
       ) {
-        console.log(smileCue.value)
+        // console.log(smileCue.value)
         if (!smoothMorphTarget) {
           nodes.AvatarHead.morphTargetInfluences[
             nodes.AvatarHead.morphTargetDictionary[
@@ -254,77 +262,126 @@ const expression_que = {"smileque": [
   });
 
 
-  useFrame((state) => {
 
-  nodes.AvatarHead.morphTargetInfluences[
-        nodes.AvatarHead.morphTargetDictionary[
-          "eyeBlinkRight"
-        ]
-      ] = 0;
-
-  nodes.AvatarHead.morphTargetInfluences[
-    nodes.AvatarHead.morphTargetDictionary[
-      "eyeBlinkLeft"
-    ]
-  ] = 0;
-
+useFrame((state) => {
     const curr_blink_time = new Date().getSeconds();
-    console.log(curr_blink_time);
-    const used_keys = {
-    1: "eyeBlinkLeft",
-    2: "eyeBlinkRight"
-  }
-        
-   Object.values(used_keys).forEach((value) => {
+    // if (curr_smile_time < prev_smile_time ){
+    //   setPrevTime(
+    //       0
+    //   );
+    // }
+
+    // const time_difference = curr_smile_time - prev_smile_time;
+    // console.log(curr_smile_time);
+
+   Object.values(expression_que.blinkque).forEach((value) => {
+      if (!smoothMorphTarget) {
         nodes.AvatarHead.morphTargetInfluences[
           nodes.AvatarHead.morphTargetDictionary[value]
         ] = 0;
-
-        nodes.AvatarEyelashes.morphTargetInfluences[
-          nodes.AvatarEyelashes.morphTargetDictionary[value]
+        nodes.AvatarTeethLower.morphTargetInfluences[
+          nodes.AvatarTeethLower.morphTargetDictionary[value]
         ] = 0;
-        
-   })
+      } else {
+        nodes.AvatarHead.morphTargetInfluences[
+          nodes.AvatarHead.morphTargetDictionary[value]
+        ] = THREE.MathUtils.lerp(
+          nodes.AvatarHead.morphTargetInfluences[
+            nodes.AvatarHead.morphTargetDictionary[value]
+          ],
+          0,
+          morphTargetSmoothing
+        );
+
+        nodes.AvatarTeethLower.morphTargetInfluences[
+          nodes.AvatarTeethLower.morphTargetDictionary[value]
+        ] = THREE.MathUtils.lerp(
+          nodes.AvatarTeethLower.morphTargetInfluences[
+            nodes.AvatarTeethLower.morphTargetDictionary[value]
+          ],
+          0,
+          morphTargetSmoothing
+        );
+      }
+    });
 
     for (let i = 0; i < expression_que.blinkque.length; i++) {
       const blinkCue = expression_que.blinkque[i];
-
-      
       if (
-        (curr_blink_time+1) === blinkCue.start 
+        (curr_blink_time+1) >= blinkCue.start &&
+        (curr_blink_time+1) <= blinkCue.end
       ) {
-        console.log(blinkCue.value)
-        nodes.AvatarHead.morphTargetInfluences[
-          nodes.AvatarHead.morphTargetDictionary[
-            "eyeBlinkRight"
-          ]
-        ] = blinkCue.value;
-
-        nodes.AvatarHead.morphTargetInfluences[
-          nodes.AvatarHead.morphTargetDictionary[
-            "eyeBlinkLeft"
-          ]
-        ] = blinkCue.value;
-
-        nodes.AvatarEyelashes.morphTargetInfluences[
-          nodes.AvatarEyelashes.morphTargetDictionary[
-            "eyeBlinkLeft"
-          ]
-        ] = blinkCue.value;
-        nodes.AvatarEyelashes.morphTargetInfluences[
-          nodes.AvatarEyelashes.morphTargetDictionary[
-            "eyeBlinkRight"
-          ]
-        ] = blinkCue.value;
-
-        
-        
+        // console.log(blinkCue.value)
+        if (!smoothMorphTarget) {
+          nodes.AvatarHead.morphTargetInfluences[
+            nodes.AvatarHead.morphTargetDictionary[
+              "eyeBlinkRight"
+            ]
+          ] = blinkCue.value;
+          nodes.AvatarTeethLower.morphTargetInfluences[
+            nodes.AvatarTeethLower.morphTargetDictionary[
+              "eyeBlinkRight"
+            ]
+          ] = blinkCue.value;
+        } else {
+          nodes.AvatarHead.morphTargetInfluences[
+            nodes.AvatarHead.morphTargetDictionary[
+              "eyeBlinkRight"
+            ]
+          ] = THREE.MathUtils.lerp(
+            nodes.AvatarHead.morphTargetInfluences[
+              nodes.AvatarHead.morphTargetDictionary[
+                "eyeBlinkRight"
+              ]
+            ],
+            blinkCue.value,
+            morphTargetSmoothing
+          );
+          nodes.AvatarTeethLower.morphTargetInfluences[
+            nodes.AvatarTeethLower.morphTargetDictionary[
+              "eyeBlinkRight"
+            ]
+          ] = THREE.MathUtils.lerp(
+            nodes.AvatarTeethLower.morphTargetInfluences[
+              nodes.AvatarTeethLower.morphTargetDictionary[
+                "eyeBlinkRight"
+              ]
+            ],
+            blinkCue.value,
+            morphTargetSmoothing
+          );
+          nodes.AvatarHead.morphTargetInfluences[
+            nodes.AvatarHead.morphTargetDictionary[
+              "eyeBlinkLeft"
+            ]
+          ] = THREE.MathUtils.lerp(
+            nodes.AvatarHead.morphTargetInfluences[
+              nodes.AvatarHead.morphTargetDictionary[
+                "eyeBlinkLeft"
+              ]
+            ],
+            blinkCue.value,
+            morphTargetSmoothing
+          );
+          nodes.AvatarTeethLower.morphTargetInfluences[
+            nodes.AvatarTeethLower.morphTargetDictionary[
+              "eyeBlinkLeft"
+            ]
+          ] = THREE.MathUtils.lerp(
+            nodes.AvatarTeethLower.morphTargetInfluences[
+              nodes.AvatarTeethLower.morphTargetDictionary[
+                "eyeBlinkLeft"
+              ]
+            ],
+            blinkCue.value,
+            morphTargetSmoothing
+          );
+        }
 
         break;
       }
     }
   });
-
   // for (let i=0; i < Object.entries(smile_que).length; i++)
 
   return (
