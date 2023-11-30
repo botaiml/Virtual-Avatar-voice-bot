@@ -1,0 +1,43 @@
+{
+  "name": "NodeBackend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.ts",
+  "scripts": {
+    "start:dev": "ts-node-dev --respawn src/server.ts",
+    "start:D": "del dist && tsc && nodemon dist/server.js",
+    "start:prod": "node dist/server.js",
+    "start": "ts-node src/server.ts",
+    "build": "tsc",
+    "migrate:generate": "ts-node --transpile-only ./node_modules/typeorm/cli.js migration:generate -n InitialMigration",
+    "migrate:run": "ts-node --transpile-only ./node_modules/typeorm/cli.js migration:run",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "prettier --config .prettierrc --write .",
+    "lint": "eslint . --ext .ts --ext .mts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/mongoose": "^5.11.97",
+    "axios": "^1.6.2",
+    "class-validator": "^0.14.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.1",
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.1.13",
+    "swagger-express-ts": "^1.1.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.6",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typeorm": "^0.2.45",
+    "typescript": "^5.3.2"
+  }
+}
