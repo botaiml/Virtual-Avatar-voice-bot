@@ -1,0 +1,4 @@
+*.cpython-*.pyc
+
+*.wav
+PythonBackend/src/models*
