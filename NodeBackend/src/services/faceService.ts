@@ -10,7 +10,7 @@ import {
   FaceEnrollSuccessResponseDTO,
 } from '../dto/face.dto';
 
-const API_BASE_URL = 'https://demo.botaiml.com/facerec';
+const API_BASE_URL = 'http://0.0.0.0:8015/facerec';
 const FACE_SEARCH_ENDPOINT = '/face-search';
 const FACE_ENROLL_EWNDPOINT = '/face-enroll';
 

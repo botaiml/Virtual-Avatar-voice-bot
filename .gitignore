@@ -27,3 +27,17 @@ AvatarUi/public/audios/hello.mp3
 AvatarUi/public/audios/hello.ogg
 AvatarUi/public/models/*.glb
 AvatarUi/public/vite.svg
+bkp.jsx
+.gitignore
+FaceRecognizer/face_recognizer.log
+FaceRecognizer/__pycache__/debug_server.cpython-37.pyc
+.gitignore
+FaceRecognizer/__pycache__/main.cpython-37.pyc
+
+*.cpython-37.pyc
+FaceRecognizer/models/*
+FaceRecognizer/src/FaceValidation/models/*
+Milvus/db/*
+Milvus/logs/*
+Milvus/wal/*
+AvatarUi/public/models/avatar.fbx
