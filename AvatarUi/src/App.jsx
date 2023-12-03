@@ -77,7 +77,7 @@ function App(props) {
               </Canvas>
           </div>
           <div style={{ flex: "1", width: "50%" }}>
-            {eachActivityType && getActivity()}
+            {/* {eachActivityType && getActivity()} */}
           </div>
         </div>
         {/* <Footer /> */}
