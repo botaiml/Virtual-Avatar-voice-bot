@@ -1,0 +1,23 @@
+version: '3'
+services:
+  milvus:
+    image: milvusdb/milvus:1.1.0-cpu-d050721-5e559c
+    container_name: milvus_cpu_1.1.0
+    ports:
+      - "19530:19530"   # Milvus server port
+      - "19121:19121"   # Milvus web management port
+    volumes:
+      - ../Milvus/db:/var/lib/milvus/db
+      - ../Milvus/conf:/var/lib/milvus/conf
+      - ../Milvus/logs:/var/lib/milvus/logs
+      - ../Milvus/wal:/var/lib/milvus/wal
+    environment:
+      - "MILVUS_UID=1000"
+      - "MILVUS_PUID=1000"
+      - "MILVUS_GID=1000"
+      - "MILVUS_PGID=1000"
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    restart: always
