@@ -27,3 +27,11 @@ AvatarUi/public/audios/hello.mp3
 AvatarUi/public/audios/hello.ogg
 AvatarUi/public/models/Avatar.glb
 AvatarUi/public/vite.svg
+AvatarUi/public/models/*
+*.log
+*.cpython*.pyc
+FaceRecognizer/models/mtcnn/*
+Milvus/wal/*
+Milvus/db/*
+FaceRecognizer/src/FaceValidation/models/*
+FaceRecognizer/models/embedding.pb
