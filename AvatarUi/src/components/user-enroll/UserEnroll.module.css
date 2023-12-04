@@ -1,0 +1,25 @@
+.appvide {
+  display: flex;
+  align-items: center;
+}
+
+.appcanvas {
+  position: absolute;
+  top: 80px;
+}
+
+.myapp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.form_user {
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 15px grey;
+}
+.button {
+  float: right;
+  margin: 10px px;
+}

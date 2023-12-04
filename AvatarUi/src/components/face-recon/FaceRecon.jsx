@@ -58,7 +58,7 @@ function FaceReconize() {
         });
         dispatch({
           type: SEARCHFACE,
-          payload: activityConfig(1, { indexId: result.indexid }),
+          payload: activityConfig(2, { indexId: result.indexid }),
         });
       } else {
         if (result.error === "Please traighten up your face") {
