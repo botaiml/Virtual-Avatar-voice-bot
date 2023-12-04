@@ -2,3 +2,4 @@
 
 *.wav
 PythonBackend/src/models*
+PythonBackend/src/AudioToVissemes
