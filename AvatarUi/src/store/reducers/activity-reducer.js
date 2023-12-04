@@ -1,4 +1,9 @@
-import { INITIALISE, ENROLLFACE, SEARCHFACE } from "../actions/activity";
+import {
+  INITIALISE,
+  ENROLLFACE,
+  SEARCHFACE,
+  ENROLLUSER,
+} from "../actions/activity";
 
 const activityReducer = (state = {}, { type, payload }) => {
   switch (type) {
@@ -11,6 +16,8 @@ const activityReducer = (state = {}, { type, payload }) => {
     case SEARCHFACE:
       return payload;
 
+    case ENROLLUSER:
+      return payload;
     default:
       return state;
   }

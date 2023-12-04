@@ -11,6 +11,7 @@ import InternalServerError from '../errors/InternalServerError';
  * /user/byIndexId/{indexId}:
  *   get:
  *     summary: Get user by indexId
+ *     tags: [User ]
  *     description: Retrieve user information based on indexId.
  *     parameters:
  *       - in: path
@@ -18,7 +19,7 @@ import InternalServerError from '../errors/InternalServerError';
  *         required: true
  *         description: The indexId of the user.
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       '200':
  *         description: Successful response
@@ -48,6 +49,42 @@ export const getUserByIndexId = async (
   }
 };
 
+/**
+ * @swagger
+ * /user/enroll:
+ *   post:
+ *     summary: Enroll a user with face images
+ *     tags: [User ]
+ *     requestBody:
+ *       description: User information and face images
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/definitions/CreateUserDTO'
+ *     responses:
+ *       200:
+ *         description: User enrolled successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               result: "User enrolled successfully"
+ */
+export const userEnroll = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const userData: CreateUserDTO = req.body;
+    const enrollResult = await enrollUserService(userData);
+    // Validate request body here if needed
+    res.json(enrollResult);
+  } catch (error) {
+    console.error('Error in face search controller:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+};
+
 // export const getUsers = async (req: Request, res: Response): Promise<void> => {
 //   const userRepository = getRepository(User);
 //   const users = await userRepository.find();
@@ -58,7 +95,6 @@ export const getUserByIndexId = async (
 //   }));
 //   res.json(userResponseDTOs);
 // };
-
 
 // export const createUser = async (
 //   req: Request,

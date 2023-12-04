@@ -1,17 +1,18 @@
 import { useRef, useEffect, useState } from "react";
 import styles from "./FaceRecon.module.css";
 import * as faceapi from "face-api.js";
-import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import faceApiService from "../../services/faceApiService";
 import SimpleBackdrop from "../SimpleLoader";
-import Snackbar from "@mui/material/Snackbar";
-import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
 import { createActivityConfig as activityConfig } from "../../helpers/activity-helper";
-import { ENROLLFACE } from "../../store/actions/activity";
-const vertical = "top";
-const horizontal = "right";
+import {
+  ENROLLFACE,
+  ENROLLUSER,
+  SEARCHFACE,
+} from "../../store/actions/activity";
+import SnackBar from "../SnackBar";
+
 function FaceReconize() {
   const videoRef = useRef();
   const canvasRef = useRef();
@@ -56,8 +57,8 @@ function FaceReconize() {
           message: "Welcome, Moving into appointments",
         });
         dispatch({
-          type: ENROLLFACE,
-          payload: activityConfig(2, { indexId: result.indexid }),
+          type: SEARCHFACE,
+          payload: activityConfig(1, { indexId: result.indexid }),
         });
       } else {
         if (result.error === "Please traighten up your face") {
@@ -210,37 +211,15 @@ function FaceReconize() {
     setBackdropOpen(false);
   };
 
-  const handleSnackClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
+  const closeSnackBar = () => {
     setNotify({ open: false, message: "" });
   };
-
-  const action = (
-    <>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleSnackClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </>
-  );
-
   return (
     <>
-      <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
-        open={notify.open}
-        message={notify.message}
-        key={vertical + horizontal}
-        autoHideDuration={4000}
-        action={action}
-        onClose={handleSnackClose}
+      <SnackBar
+        notifyOpen={notify.open}
+        notifyMessage={notify.message}
+        closeSnackBar={closeSnackBar}
       />
       {/* <SimpleBackdrop open={backdropOpen} handleClose={handleCloseBackdrop} /> */}
       <div className={styles.myapp}>

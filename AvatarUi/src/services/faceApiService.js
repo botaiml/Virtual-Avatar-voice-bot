@@ -21,9 +21,27 @@ const faceApiService = {
     }
   },
 
-  enrollFace: async (formData) => {
+  enrollFace: async (imageData) => {
+    const reqBody = {
+      base64: imageData.replace("data:image/png;base64,", ""),
+    };
     try {
-      const response = await axios.post(`${API_URL}/face/enroll`, formData, {
+      const response = await axios.post(`${API_URL}/face/enroll`, reqBody, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
+    } catch (error) {
+      // Handle errors, log them, or throw an exception
+      console.error("Error in face enrollment:", error);
+      throw error;
+    }
+  },
+
+  enrollUser: async (formData) => {
+    try {
+      const response = await axios.post(`${API_URL}/user/enroll`, formData, {
         headers: {
           "Content-Type": "application/json",
         },

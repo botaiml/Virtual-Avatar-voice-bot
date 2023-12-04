@@ -11,4 +11,8 @@ export const ACTIVITIES = [
     id: "search",
     activityType: "SearchFace",
   },
+  {
+    id: "userenroll",
+    activityType: "EnrollUser",
+  },
 ];

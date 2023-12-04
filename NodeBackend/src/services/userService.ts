@@ -15,46 +15,25 @@ export const enrollUserService = async (
   userRequest: CreateUserDTO,
 ): Promise<any> => {
   const userRepository = getRepository(User);
-  // first to hit api and on success save the data to db
-  const enrollRequest: FaceEnrollApiRequest = userRequest.images.map(
-    (image, index) => ({ edit: true, id: index, file: image }),
-  );
-
   try {
-    const faceEnrollReponse: any = await faceEnrollService(enrollRequest);
-    //   save the face to db
-    // CHANGE IN FACE ENROLL RESPONSE REQUIRED - as it returns array of object where success in present in all the array, hard to handle in savin to the db
-    //   for this instance checking the success flag for 3 element out of 5
-    const indexIds = [];
-    const faceImages = [];
-    for (let i = 0; i < faceEnrollReponse.length; i++) {
-      const eachRes = faceEnrollReponse[i];
-      if (eachRes.success) {
-        indexIds.push(eachRes.indexid);
-        faceImages.push(userRequest.images[i]);
-      }
-    }
+    // Save data to PostgreSQL database
+    const createUser: User = {
+      name: userRequest.name,
+      email: userRequest.email,
+      DOB: userRequest.dob,
+      phoneNumber: userRequest.phoneNumber,
+    };
+    const newUser = userRepository.create(createUser);
+    const user = await userRepository.save(newUser);
+    const mongoUser = new UserMongoModel({
+      userId: user.id,
+      indexIds: userRequest.indexIds,
+      images: userRequest.images,
+    });
 
-    if (indexIds.length > 0) {
-      // Save data to PostgreSQL database
-      const createUser: User = {
-        name: userRequest.name,
-        email: userRequest.email,
-        DOB: userRequest.dob,
-        phoneNumber: userRequest.phoneNumber,
-      };
-      const newUser = userRepository.create(createUser);
-      const user = await userRepository.save(newUser);
-      const mongoUser = new UserMongoModel({
-        userId: user.id,
-        indexId: indexIds,
-        images: faceImages,
-      });
+    await mongoUser.save();
 
-      await mongoUser.save();
-
-      return { success: true, message: 'Enrollment success' };
-    }
+    return { success: true, message: 'Enrollment success' };
   } catch (error: any) {
     console.log(error?.message);
     return { success: false, message: 'enrollment failure' };
@@ -66,7 +45,7 @@ export const userByIndexId = async (
 ): Promise<User | undefined> => {
   const userRepository = getRepository(User);
   try {
-    const userMongoData = await UserMongoModel.findOne({ indexId: indexId });
+    const userMongoData = await UserMongoModel.findOne({ indexIds: indexId });
 
     if (!userMongoData) {
       throw new NotFoundError('User not found');
