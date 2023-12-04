@@ -1,0 +1,37 @@
+{
+  "metadata": {
+    "soundFile": "/home/pd/Documents/Development/VirtualAssistant/Git/PythonBackend/output_audio.wav",
+    "duration": 5.16
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.04, "value": "X" },
+    { "start": 0.04, "end": 0.10, "value": "C" },
+    { "start": 0.10, "end": 0.30, "value": "B" },
+    { "start": 0.30, "end": 0.71, "value": "X" },
+    { "start": 0.71, "end": 0.84, "value": "B" },
+    { "start": 0.84, "end": 0.91, "value": "C" },
+    { "start": 0.91, "end": 0.99, "value": "A" },
+    { "start": 0.99, "end": 1.05, "value": "D" },
+    { "start": 1.05, "end": 1.18, "value": "B" },
+    { "start": 1.18, "end": 1.37, "value": "D" },
+    { "start": 1.37, "end": 1.42, "value": "C" },
+    { "start": 1.42, "end": 1.95, "value": "B" },
+    { "start": 1.95, "end": 2.09, "value": "C" },
+    { "start": 2.09, "end": 2.16, "value": "B" },
+    { "start": 2.16, "end": 2.51, "value": "E" },
+    { "start": 2.51, "end": 2.86, "value": "B" },
+    { "start": 2.86, "end": 2.93, "value": "C" },
+    { "start": 2.93, "end": 3.21, "value": "B" },
+    { "start": 3.21, "end": 3.28, "value": "H" },
+    { "start": 3.28, "end": 3.35, "value": "D" },
+    { "start": 3.35, "end": 3.56, "value": "C" },
+    { "start": 3.56, "end": 3.64, "value": "A" },
+    { "start": 3.64, "end": 3.77, "value": "B" },
+    { "start": 3.77, "end": 3.98, "value": "D" },
+    { "start": 3.98, "end": 4.05, "value": "C" },
+    { "start": 4.05, "end": 4.68, "value": "B" },
+    { "start": 4.68, "end": 4.76, "value": "A" },
+    { "start": 4.76, "end": 5.04, "value": "B" },
+    { "start": 5.04, "end": 5.16, "value": "X" }
+  ]
+}

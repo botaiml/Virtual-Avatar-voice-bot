@@ -17,6 +17,8 @@ import { useGLTF } from "@react-three/drei";
 import { Expression } from "./FacialAnimation";
 import * as THREE from "three";
 import { expression_que,  avatar_smile, avatar_blink, avatar_speak} from "../helpers/expression-helpers";
+import axios from "axios";
+import { SpeechApiService } from "../services/speechApiService"
 
 export function Avatar(props) {
   // const { nodes, materials, scene } = useGLTF("/models/Avatar.glb");
@@ -72,16 +74,33 @@ materials.skinning = true;
   
   const [animation, setAnimation] = useState("idle_4");
 
-   
-
   const group = useRef();
   const { actions } = useAnimations(
     [idle_1[0], idle_2[0], idle_3[0], idle_4[0], idle_4[0], idle_6[0]],
     group
   );
 
+  const dialogue = "Hello, I am a virtual Avatar a bot designed by Integra Private Limited"
 
   // console.log(expression_que.smile_que);
+
+  useEffect( async() =>{
+    try{
+
+    const {metadata, mouthCues} = await SpeechApiService.getSpeechData(dialogue)
+    
+    const audio_bytes = metadata.soundFile
+    const duration = metadata.duration
+    
+
+    debugger
+    }
+    catch (error) {
+      throw console.error("Error in face detection:", error);
+    }
+
+  }, [])
+
   useEffect(() => {
     actions[animation].reset().fadeIn(0.5).play();
     return () => actions[animation].fadeOut(0.5);
@@ -113,7 +132,7 @@ materials.skinning = true;
       setAnimation("idle_4");
       return;
     }
-
+    
     const audio_nodes = avatar_speak(nodes, morphTargetSmoothing, audio)
     nodes = audio_nodes
   });

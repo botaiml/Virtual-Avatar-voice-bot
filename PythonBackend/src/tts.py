@@ -3,10 +3,10 @@ import torch
 from enum import Enum
 from pydantic import BaseModel
 from aksharamukha import transliterate
-import craete_ssml as sml
-import voice
-import num2text
-import update as upt
+import src.craete_ssml as sml
+import src.voice as voice
+import src.num2text as num2text
+import src.update as upt
 
 torch.set_num_threads(4)
 device = torch.device('cpu')

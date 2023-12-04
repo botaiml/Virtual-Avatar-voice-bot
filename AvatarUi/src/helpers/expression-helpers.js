@@ -269,7 +269,7 @@ let j = 0
 export const avatar_blink = (nodes, morphTargetSmoothing) => {
     
     const curr_blink_time = (new Date().getMilliseconds()) ;
-    console.log(curr_blink_time);
+    // console.log(curr_blink_time);
     const blink_keys = {
     1: "eyeBlinkLeft",
     2: "eyeBlinkRight"
@@ -298,9 +298,9 @@ export const avatar_blink = (nodes, morphTargetSmoothing) => {
         (curr_blink_time)/10 >= blinkCue.start &&
         (curr_blink_time)/10 <= blinkCue.end
     ) {
-        console.log("blink")
+        // console.log("blink")
         j=0
-        console.log(blinkCue.value)
+        // console.log(blinkCue.value)
         nodes.AvatarHead.morphTargetInfluences[
         nodes.AvatarHead.morphTargetDictionary[
             "eyeBlinkRight"

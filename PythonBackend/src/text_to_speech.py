@@ -1,13 +1,13 @@
 #text to speech class
 #visme
-import tts  
+import src.tts  as tts
 import librosa
 import noisereduce as nr
 import soundfile as sf
 
 
-en_model = './models/v3_en_indic.pt'
-indic_model = './models/v3_indic.pt'
+en_model = './src/models/v3_en_indic.pt'
+indic_model = './src/models/v3_indic.pt'
 TTS = tts.TextToSpeechService()
 
 class TTSModule:
@@ -20,10 +20,10 @@ class TTSModule:
         print("indic_tts model is loaded.............................")
     
     def text_to_speech(self, request):
-        audio_buf = TTS.text_to_speech(request["text"], request["languages"], request["pitch"], request["rate"], request["audio_format"], 
-                        request["en_speaker"], request["indic_speaker"], request["db_value"], request["dot_break_time"], 
-                        request["question_break_time"], request["commas_break_time"], 
-                        request["exclaimtory_break_time"])
+        audio_buf = TTS.text_to_speech(request.text, request.languages, request.pitch, request.rate, request.audio_format, 
+                        request.en_speaker, request.indic_speaker, request.db_value, request.dot_break_time, 
+                        request.question_break_time, request.commas_break_time, 
+                        request.exclaimtory_break_time)
         
         # For noise reduction
         y, sr = librosa.load(audio_buf, sr=None)
@@ -53,6 +53,6 @@ request = {
     "exclaimtory_break_time": "0.4"
 }
 
-result_file = task.text_to_speech(request)
-print(f"Generated audio file: {result_file}")
+# result_file = task.text_to_speech(request)
+# print(f"Generated audio file: {result_file}")
 

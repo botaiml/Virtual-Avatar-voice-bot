@@ -46,3 +46,4 @@ Milvus/db/*
 Milvus/logs/*
 Milvus/wal/*
 AvatarUi/public/models/avatar.fbx
+PythonBackend/src/Rhubarb/*
