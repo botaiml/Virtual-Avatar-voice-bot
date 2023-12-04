@@ -40,12 +40,17 @@ export interface UserResponseDTO {
  *         type: array
  *         items:
  *           type: string
+ *       indexIds:
+ *         type: array
+ *         items:
+ *           type: string
  *     required:
  *       - name
  *       - phoneNumber
  *       - dob
  *       - email
  *       - images
+ *       - indexIds
  */
 
 export interface CreateUserDTO {
@@ -54,6 +59,7 @@ export interface CreateUserDTO {
   dob: string; // Assuming date format, you can adjust it based on your needs
   email: string;
   images: string[];
+  indexIds: string[];
 }
 
 export interface UserResponseDTO {

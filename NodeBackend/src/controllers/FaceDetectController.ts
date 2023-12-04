@@ -1,14 +1,16 @@
 // src/controllers/faceController.ts
 
 import { Request, Response } from 'express';
-import { faceSearchService } from '../services/faceService';
+import { faceEnrollService, faceSearchService } from '../services/faceService';
 import {
   FaceSearchApiSuccessRresponse,
   FaceSearchRequest,
   FaceSearchApiErrorResponse,
+  FaceEnrollSuccessResponseDTO,
+  FaceEnrollErrorResponseDTO,
 } from '../dto/face.dto';
 import { CreateUserDTO } from '../dto/user.dto';
-import { enrollUserService } from '../services/userService';
+// import { enrollUserService } from '../services/userService';
 
 /**
  * @swagger
@@ -58,31 +60,39 @@ export const faceSearch = async (
  * @swagger
  * /face/enroll:
  *   post:
- *     summary: Enroll a user with face images
+ *     summary: Perform a face enroll
  *     tags: [Face Detection]
  *     requestBody:
- *       description: User information and face images
+ *       description: The face enroll request
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/definitions/CreateUserDTO'
+ *             $ref: '#/components/schemas/FaceSearchRequest'
  *     responses:
  *       200:
- *         description: User enrolled successfully
+ *         description: Successful response with face enroll results
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/FaceEnrollSuccessResponseDTO'
+ *       500:
+ *         description: Internal Server Error
  *         content:
  *           application/json:
  *             example:
- *               result: "User enrolled successfully"
+ *               success: false
+ *               error: Internal Server Error
  */
 export const faceEnroll = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
   try {
-    const userData: CreateUserDTO = req.body;
-    const enrollResult = await enrollUserService(userData);
-    // Validate request body here if needed
+    const enrollRequest: FaceSearchRequest = req.body;
+    const enrollResult:
+      | FaceEnrollSuccessResponseDTO
+      | FaceEnrollErrorResponseDTO = await faceEnrollService(enrollRequest);
     res.json(enrollResult);
   } catch (error) {
     console.error('Error in face search controller:', error);

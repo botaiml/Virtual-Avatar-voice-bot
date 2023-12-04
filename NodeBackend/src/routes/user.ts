@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { getUserByIndexId } from '../controllers/UserController';
+import { getUserByIndexId, userEnroll } from '../controllers/UserController';
 
 export const userRouter = Router();
 
 userRouter.get('/byIndexId/:indexId', getUserByIndexId);
+userRouter.post('/enroll', userEnroll);

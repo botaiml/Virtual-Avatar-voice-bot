@@ -7,8 +7,10 @@ import swaggerJsdoc from 'swagger-jsdoc';
 export const app = express();
 import { faceRouter } from './routes/face-detect';
 import { connectDB as connectMongoDb } from './database/mongo-connection';
+import dotenv from 'dotenv';
 //middlewares
 app.use(json({ limit: '50mb' }));
+dotenv.config();
 
 // porstgres
 connectDatabase()
