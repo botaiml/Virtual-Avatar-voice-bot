@@ -27,16 +27,6 @@ AvatarUi/public/audios/hello.mp3
 AvatarUi/public/audios/hello.ogg
 AvatarUi/public/models/*.glb
 AvatarUi/public/vite.svg
-<<<<<<< HEAD
-AvatarUi/public/models/*
-*.log
-*.cpython*.pyc
-FaceRecognizer/models/mtcnn/*
-Milvus/wal/*
-Milvus/db/*
-FaceRecognizer/src/FaceValidation/models/*
-FaceRecognizer/models/embedding.pb
-=======
 bkp.jsx
 .gitignore
 FaceRecognizer/face_recognizer.log
@@ -51,4 +41,3 @@ Milvus/db/*
 Milvus/logs/*
 Milvus/wal/*
 AvatarUi/public/models/avatar.fbx
->>>>>>> 38d39e41ca65f8f900d078e79c0165c511f384e5
