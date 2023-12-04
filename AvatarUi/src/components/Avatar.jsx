@@ -16,36 +16,49 @@ import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import { Expression } from "./FacialAnimation";
 import * as THREE from "three";
-import { expression_que,  avatar_smile, avatar_blink, avatar_speak} from "../helpers/expression-helpers";
+import {
+  expression_que,
+  avatar_smile,
+  avatar_blink,
+  avatar_speak,
+} from "../helpers/expression-helpers";
 import axios from "axios";
-import { SpeechApiService } from "../services/speechApiService"
+import { SpeechApiService } from "../services/speechApiService";
 
 export function Avatar(props) {
+  const [audio_bytes, setaudio_bytes] = useState(second);
   // const { nodes, materials, scene } = useGLTF("/models/Avatar.glb");
-  const { 
-    playAudio, 
-    script,
-    morphTargetSmoothing,
-    smoothMorphTarget
-    } = useControls({
-    playAudio: false,
-    smoothMorphTarget: true,
-    morphTargetSmoothing: 0.2,
-    script: {
-      value: "hello",
-      options: ["hello"],
-    },
-  });
+  const { playAudio, script, morphTargetSmoothing, smoothMorphTarget } =
+    useControls({
+      playAudio: false,
+      smoothMorphTarget: true,
+      morphTargetSmoothing: 0.2,
+      script: {
+        value: "hello",
+        options: ["hello"],
+      },
+    });
 
   const headFollow = true;
 
   const audio = useMemo(() => new Audio(`/audios/${script}.mp3`), [script]);
-
+  const audioBuffer = useMemo(() => {
+    if (!audio_bytes) return null;
+    console.log("INTO AUDIO BUFFER")
+    // Convert audio bytes to an audio buffer
+    const audioContext = new (window.AudioContext ||
+      window.webkitAudioContext)();
+    return new Promise((resolve) => {
+      audioContext.decodeAudioData(audio_bytes, (buffer) => {
+        resolve(buffer);
+      });
+    });
+  }, [audio_bytes]);
   useEffect(() => {
     if (playAudio) {
-      audio.play();
+      audioBuffer.play();
     } else {
-      audio.pause();
+      audioBuffer.pause();
     }
   }, [playAudio, script]);
 
@@ -53,7 +66,7 @@ export function Avatar(props) {
     GLTFLoader,
     "models/Avatar_2.glb"
   );
-materials.skinning = true;
+  materials.skinning = true;
   // const { nodes, materials, scene } = useGLTF('/model.gltf');
 
   const { animations: idle_1 } = useFBX("/animations/animation_1.fbx");
@@ -71,7 +84,7 @@ materials.skinning = true;
   idle_4[0].name = "idle_4";
   idle_5[0].name = "idle_5";
   idle_6[0].name = "idle_6";
-  
+
   const [animation, setAnimation] = useState("idle_4");
 
   const group = useRef();
@@ -80,26 +93,25 @@ materials.skinning = true;
     group
   );
 
-  const dialogue = "Hello, I am a virtual Avatar a bot designed by Integra Private Limited"
+  const dialogue =
+    "Hello, I am a virtual Avatar a bot designed by Integra Private Limited";
 
   // console.log(expression_que.smile_que);
 
-  useEffect( async() =>{
-    try{
+  useEffect(async () => {
+    try {
+      const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
+        dialogue
+      );
 
-    const {metadata, mouthCues} = await SpeechApiService.getSpeechData(dialogue)
-    
-    const audio_bytes = metadata.soundFile
-    const duration = metadata.duration
-    
+      setaudio_bytes(metadata.soundFile);
+      const duration = metadata.duration;
 
-    debugger
-    }
-    catch (error) {
+      debugger;
+    } catch (error) {
       throw console.error("Error in face detection:", error);
     }
-
-  }, [])
+  }, []);
 
   useEffect(() => {
     actions[animation].reset().fadeIn(0.5).play();
@@ -107,24 +119,21 @@ materials.skinning = true;
   }, [animation]);
 
   useFrame((state) => {
-
     if (headFollow) {
       group.current.getObjectByName("Head").lookAt(state.camera.position);
     }
-
   });
 
   useFrame((state) => {
-    const smile_nodes = avatar_smile(nodes, morphTargetSmoothing)
-    nodes = smile_nodes
+    const smile_nodes = avatar_smile(nodes, morphTargetSmoothing);
+    nodes = smile_nodes;
   });
 
-  let j = 0
-
+  let j = 0;
 
   useFrame((state) => {
-    const blink_nodes = avatar_blink(nodes, morphTargetSmoothing)
-    nodes = blink_nodes
+    const blink_nodes = avatar_blink(nodes, morphTargetSmoothing);
+    nodes = blink_nodes;
   });
 
   useFrame(() => {
@@ -132,29 +141,29 @@ materials.skinning = true;
       setAnimation("idle_4");
       return;
     }
-    
-    const audio_nodes = avatar_speak(nodes, morphTargetSmoothing, audio)
-    nodes = audio_nodes
+
+    const audio_nodes = avatar_speak(nodes, morphTargetSmoothing, audioBuffer);
+    nodes = audio_nodes;
   });
 
-const upperTeethMaterial = useMemo(() => {
-  const material = new THREE.MeshStandardMaterial({
-    // color: 0xFFFFFF, // Adjust the initial color as needed
-    roughness: 0,   // Adjust roughness
-    metalness: 0.0,   // Adjust metalness
-    map: materials.AvatarTeethUpper.map, // Replace '/path/to/teeth_texture.jpg' with the actual path to your image
-    // Add other material properties here if needed
-  });
+  const upperTeethMaterial = useMemo(() => {
+    const material = new THREE.MeshStandardMaterial({
+      // color: 0xFFFFFF, // Adjust the initial color as needed
+      roughness: 0, // Adjust roughness
+      metalness: 0.0, // Adjust metalness
+      map: materials.AvatarTeethUpper.map, // Replace '/path/to/teeth_texture.jpg' with the actual path to your image
+      // Add other material properties here if needed
+    });
 
     material.color.multiplyScalar(3); // You can adjust the factor as needed
 
-  // Enable shadows for the material
-  material.shadowSide = THREE.FrontSide;
-  material.receiveShadow = true;
+    // Enable shadows for the material
+    material.shadowSide = THREE.FrontSide;
+    material.receiveShadow = true;
 
-  return material;
-}, [materials]); // 
-  
+    return material;
+  }, [materials]); //
+
   return (
     <group {...props} dispose={null} ref={group}>
       <primitive object={scene} />
@@ -211,9 +220,8 @@ const upperTeethMaterial = useMemo(() => {
         <skinnedMesh
           geometry={nodes.AvatarTeethUpper.geometry}
           skeleton={nodes.AvatarTeethUpper.skeleton}
-          material={upperTeethMaterial}   
+          material={upperTeethMaterial}
           castShadow
-          
         />
         <skinnedMesh
           geometry={nodes.haircut.geometry}
@@ -236,7 +244,7 @@ const upperTeethMaterial = useMemo(() => {
           skeleton={nodes.outfit_top.skeleton}
         />
       </group>
-      </group>
+    </group>
   );
 }
 
