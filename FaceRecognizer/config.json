@@ -1,0 +1,13 @@
+{
+    "milvus":{
+        "collection_name": "AvatarFaceRec",
+        "host": "0.0.0.0",
+        "port": 19530,
+        "dimension": 512,
+        "index_file_size": 1024,
+        "threshold": 0.78,
+        "pool_size":  10,
+        "image_height": 400
+    },
+    "port": 8015
+}

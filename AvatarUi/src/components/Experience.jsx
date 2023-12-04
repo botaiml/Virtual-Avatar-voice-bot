@@ -1,20 +1,28 @@
-import { Environment, OrbitControls, useTexture } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
-import { Avatar } from "./Avatar";
+
+import { Environment, Stage, OrbitControls, useTexture } from '@react-three/drei';
+import React, { Suspense, useRef } from "react"; //highlight-line
+import { Avatar } from './Avatar';
+import { useThree } from '@react-three/fiber'
 
 export const Experience = () => {
-  const texture = useTexture("textures/youtubeBackground.jpg");
-  const viewport = useThree((state) => state.viewport);
 
-  return (
-    <>
-      <OrbitControls />
-      <Avatar position={[0, -3, 5]} scale={2} />
-      <Environment preset="sunset" />
-      {/* <mesh>
-        <planeGeometry args={[viewport.width, viewport.height]} />
-        <meshBasicMaterial map={texture} />
-      </mesh> */}
-    </>
-  );
-};
+    const texture = useTexture("textures/Bg.jpg")
+    const viewport = useThree((state) => state.viewport)
+    const ref = useRef()
+    return (
+        <>
+        
+            <Suspense fallback={null}>
+                <Avatar position={[0, -5.7, 4]} scale={4} />
+            </Suspense>
+            <Environment  preset='city' />
+            <mesh>
+                <planeGeometry args={[viewport.width*2, viewport.height*2]} />
+                <meshBasicMaterial map={texture} />
+            </mesh>
+            <OrbitControls ref={ref} />
+
+        </>
+    );
+}
+

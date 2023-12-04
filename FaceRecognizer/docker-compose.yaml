@@ -1,0 +1,36 @@
+version: '3'
+services:
+  mahe-faerec:
+    build: .
+    image: faerec_mahe_1_6_23
+    restart: always
+    network_mode: "host"
+    ports:
+      - "8015:8015"
+
+    # extra_hosts:
+    # - "host.docker.internal:host-gateway"
+
+    
+    volumes:
+      - ./:/recognize/
+
+    # privileged: true
+
+    command: 
+      -  /bin/bash
+      -  -c
+      -  |
+
+          cd /recognize/
+          export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+          python3.7 debug_server.py
+
+
+          
+          i=0
+          while true
+          do
+            sleep 5
+            ((i++))
+          done
