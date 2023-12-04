@@ -1,3 +1,9 @@
+*.cpython-*.pyc
+
+*.wav
+PythonBackend/src/models*
+PythonBackend/src/AudioToVissemes
+
 AvatarUi/public/face-models/age_gender_model-shard1
 AvatarUi/public/face-models/age_gender_model-weights_manifest.json
 AvatarUi/public/face-models/face_expression_model-shard1
@@ -34,7 +40,6 @@ FaceRecognizer/__pycache__/debug_server.cpython-37.pyc
 .gitignore
 FaceRecognizer/__pycache__/main.cpython-37.pyc
 
-*.cpython-37.pyc
 FaceRecognizer/models/*
 FaceRecognizer/src/FaceValidation/models/*
 Milvus/db/*
