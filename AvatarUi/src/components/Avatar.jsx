@@ -26,7 +26,7 @@ import axios from "axios";
 import { SpeechApiService } from "../services/speechApiService";
 
 export function Avatar(props) {
-  const [audio_bytes, setaudio_bytes] = useState(second);
+  const [audio_bytes, setaudio_bytes] = useState(null);
   // const { nodes, materials, scene } = useGLTF("/models/Avatar.glb");
   const { playAudio, script, morphTargetSmoothing, smoothMorphTarget } =
     useControls({
@@ -41,26 +41,46 @@ export function Avatar(props) {
 
   const headFollow = true;
 
-  const audio = useMemo(() => new Audio(`/audios/${script}.mp3`), [script]);
-  const audioBuffer = useMemo(() => {
+  // const audio = useMemo(() => new Audio(`/audios/${script}.mp3`), [script]);
+  const audio = useMemo(() => {
     if (!audio_bytes) return null;
-    console.log("INTO AUDIO BUFFER")
-    // Convert audio bytes to an audio buffer
-    const audioContext = new (window.AudioContext ||
-      window.webkitAudioContext)();
-    return new Promise((resolve) => {
-      audioContext.decodeAudioData(audio_bytes, (buffer) => {
-        resolve(buffer);
-      });
-    });
-  }, [audio_bytes]);
+    createAudioFromByteArray(audio_bytes), [audio_bytes];
+  });
+
+  debugger;
+  // const audio = useMemo(() => {
+  //   if (!audio_bytes) return null;
+  //   console.log("INTO AUDIO BUFFER")
+  //   // Convert audio bytes to an audio buffer
+  //   const audioContext = new (window.AudioContext ||
+  //     window.webkitAudioContext)();
+  //   return new Promise((resolve) => {
+  //     audioContext.decodeAudioData(audio_bytes, (buffer) => {
+  //       resolve(buffer);
+  //     });
+  //   });
+  // }, [audio_bytes]);
+
+  function createAudioFromByteArray(byteArray) {
+    const blob = byteArrayToBlob(byteArray);
+    const audioUrl = URL.createObjectURL(blob);
+    return new Audio(audioUrl);
+  }
+
+  function byteArrayToBlob(byteArray) {
+    return new Blob([new Uint8Array(byteArray)], { type: "audio/wav" });
+  }
+
   useEffect(() => {
-    if (playAudio) {
-      audioBuffer.play();
-    } else {
-      audioBuffer.pause();
-    }
-  }, [playAudio, script]);
+    const audioControl = () => {
+      if (playAudio) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+      if (audio_bytes !== null) audioControl();
+    };
+  }, [playAudio, audio_bytes]);
 
   let { nodes, materials, scene } = useLoader(
     GLTFLoader,
@@ -98,19 +118,36 @@ export function Avatar(props) {
 
   // console.log(expression_que.smile_que);
 
-  useEffect(async () => {
-    try {
-      const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
-        dialogue
-      );
+  // useEffect(async () => {
+  //   try {
+  //     const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
+  //       dialogue
+  //     );
 
-      setaudio_bytes(metadata.soundFile);
-      const duration = metadata.duration;
+  //     setaudio_bytes(metadata.soundFile);
+  //     const duration = metadata.duration;
 
-      debugger;
-    } catch (error) {
-      throw console.error("Error in face detection:", error);
-    }
+  //     debugger;
+  //   } catch (error) {
+  //     throw console.error("Error in face detection:", error);
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    const speechData = async () => {
+      try {
+        const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
+          dialogue
+        );
+        debugger;
+        setaudio_bytes(metadata.soundFile);
+        const duration = metadata.duration;
+      } catch (error) {
+        debugger;
+        console.log(error);
+      }
+    };
+    speechData();
   }, []);
 
   useEffect(() => {
@@ -137,13 +174,15 @@ export function Avatar(props) {
   });
 
   useFrame(() => {
-    if (audio.paused || audio.ended) {
-      setAnimation("idle_4");
-      return;
-    }
+    if (audio_bytes) {
+      if (audio.paused || audio.ended) {
+        setAnimation("idle_4");
+        return;
+      }
 
-    const audio_nodes = avatar_speak(nodes, morphTargetSmoothing, audioBuffer);
-    nodes = audio_nodes;
+      const audio_nodes = avatar_speak(nodes, morphTargetSmoothing, audio);
+      nodes = audio_nodes;
+    }
   });
 
   const upperTeethMaterial = useMemo(() => {
