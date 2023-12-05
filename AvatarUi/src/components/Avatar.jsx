@@ -26,7 +26,7 @@ import axios from "axios";
 import { SpeechApiService } from "../services/speechApiService";
 
 export function Avatar(props) {
-  const [audio_bytes, setaudio_bytes] = useState(null);
+  const [audio_bytes, setaudio_bytes] = useState();
   // const { nodes, materials, scene } = useGLTF("/models/Avatar.glb");
   const { playAudio, script, morphTargetSmoothing, smoothMorphTarget } =
     useControls({
@@ -44,10 +44,10 @@ export function Avatar(props) {
   // const audio = useMemo(() => new Audio(`/audios/${script}.mp3`), [script]);
   const audio = useMemo(() => {
     if (!audio_bytes) return null;
-    createAudioFromByteArray(audio_bytes), [audio_bytes];
-  });
-
+    return createAudioFromBase64(audio_bytes);
+  }, [audio_bytes]);
   debugger;
+
   // const audio = useMemo(() => {
   //   if (!audio_bytes) return null;
   //   console.log("INTO AUDIO BUFFER")
@@ -62,24 +62,63 @@ export function Avatar(props) {
   // }, [audio_bytes]);
 
   function createAudioFromByteArray(byteArray) {
-    const blob = byteArrayToBlob(byteArray);
-    const audioUrl = URL.createObjectURL(blob);
-    return new Audio(audioUrl);
+    const array = byteStringToByteArray(byteArray);
+    if (!array) return null;
+
+    try {
+      const blob = new Blob([new Uint8Array(array)], { type: "audio/wav" });
+      const audioUrl = URL.createObjectURL(blob);
+      const audios = new Audio(audioUrl);
+      return audios;
+    } catch (error) {
+      console.error("Error creating audio:", error);
+      return null;
+    }
   }
 
-  function byteArrayToBlob(byteArray) {
-    return new Blob([new Uint8Array(byteArray)], { type: "audio/wav" });
+  function byteStringToByteArray(byteArray) {
+    const matches = byteArray.match(/\\x[0-9a-fA-F]{2}/g);
+    if (!matches) return null;
+
+    return matches.map((match) => parseInt(match.slice(2), 16));
+  }
+
+  function createAudioFromBase64(base64String) {
+    try {
+      // Convert base64 string to binary data
+      const binaryString = atob(base64String);
+      const len = binaryString.length;
+      const bytes = new Uint8Array(len);
+  
+      for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+  
+      // Create Blob and Audio elements
+      const blob = new Blob([bytes], { type: "audio/wav" });
+      const audioUrl = URL.createObjectURL(blob);
+      const audios = new Audio(audioUrl);
+  
+      return audios;
+    } catch (error) {
+      console.error("Error creating audio:", error);
+      return null;
+    }
   }
 
   useEffect(() => {
     const audioControl = () => {
       if (playAudio) {
+        console.log("Play AUDIO");
         audio.play();
       } else {
         audio.pause();
       }
-      if (audio_bytes !== null) audioControl();
     };
+    if (audio_bytes) {
+      console.log("CHECK CONDITION");
+      audioControl();
+    }
   }, [playAudio, audio_bytes]);
 
   let { nodes, materials, scene } = useLoader(
@@ -139,11 +178,9 @@ export function Avatar(props) {
         const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
           dialogue
         );
-        debugger;
         setaudio_bytes(metadata.soundFile);
         const duration = metadata.duration;
       } catch (error) {
-        debugger;
         console.log(error);
       }
     };
