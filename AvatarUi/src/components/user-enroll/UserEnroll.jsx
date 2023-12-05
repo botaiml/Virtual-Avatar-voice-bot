@@ -91,7 +91,7 @@ export default function UserEnroll() {
       {activity?.data && (
         <div className={styles.myapp}>
           <h1>User Enrollment</h1>
-          <form>
+          <form className={styles.form_user}>
             <TextField
               label="Name"
               name="name"
@@ -126,21 +126,8 @@ export default function UserEnroll() {
                 />
               </DemoContainer>
             </LocalizationProvider>
-            {/* Display 5 face images */}
-            {/* <div className={styles.captured_faces}>
-              {activity?.data?.faceImages.map((face, index) => (
-                <div
-                  key={index}
-                  className={styles.captured_face}
-                  style={{ marginRight: "10px" }}
-                >
-                  <img src={face} alt={`Captured Face ${index}`} />
-                </div>
-              ))}
-            </div> */}
 
-            {/* Submit button */}
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
+            <Button className={styles.button} variant="contained" color="primary" onClick={handleSubmit}>
               Submit
             </Button>
           </form>
