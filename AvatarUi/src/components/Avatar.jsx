@@ -26,7 +26,7 @@ import axios from "axios";
 import { SpeechApiService } from "../services/speechApiService";
 
 export function Avatar(props) {
-  const [audio_bytes, setaudio_bytes] = useState(second);
+  // const [audio_bytes, setaudio_bytes] = useState();
   // const { nodes, materials, scene } = useGLTF("/models/Avatar.glb");
   const { playAudio, script, morphTargetSmoothing, smoothMorphTarget } =
     useControls({
@@ -35,30 +35,32 @@ export function Avatar(props) {
       morphTargetSmoothing: 0.2,
       script: {
         value: "hello",
-        options: ["hello"],
+        options: ["hello", "dilg_1", "dilg_2", "dilg_3", "dilg_4", "dilg_5", "dilg_6", "dilg_7", "dilg_8", "dilg_9",  "dilg_10", "dilg_11", "dilg_12",  "dilg_13"],
       },
     });
 
   const headFollow = true;
 
   const audio = useMemo(() => new Audio(`/audios/${script}.mp3`), [script]);
-  const audioBuffer = useMemo(() => {
-    if (!audio_bytes) return null;
-    console.log("INTO AUDIO BUFFER")
-    // Convert audio bytes to an audio buffer
-    const audioContext = new (window.AudioContext ||
-      window.webkitAudioContext)();
-    return new Promise((resolve) => {
-      audioContext.decodeAudioData(audio_bytes, (buffer) => {
-        resolve(buffer);
-      });
-    });
-  }, [audio_bytes]);
+  // const audioBuffer = useMemo(() => {
+  //   if (!audio_bytes) return null;
+  //   console.log("INTO AUDIO BUFFER")
+  //   // Convert audio bytes to an audio buffer
+  //   const audioContext = new (window.AudioContext ||
+  //     window.webkitAudioContext)();
+  //   return new Promise((resolve) => {
+  //     audioContext.decodeAudioData(audio_bytes, (buffer) => {
+  //       resolve(buffer);
+  //     });
+  //   });
+  // }, [audio_bytes]);
+
+
   useEffect(() => {
     if (playAudio) {
-      audioBuffer.play();
+      audio.play();
     } else {
-      audioBuffer.pause();
+      audio.pause();
     }
   }, [playAudio, script]);
 
@@ -75,6 +77,8 @@ export function Avatar(props) {
   const { animations: idle_4 } = useFBX("/animations/animation_4.fbx");
   const { animations: idle_5 } = useFBX("/animations/animation_5.fbx");
   const { animations: idle_6 } = useFBX("/animations/animation_6.fbx");
+  const { animations: waving } = useFBX("/animations/Waving.fbx");
+
 
   // console.log(idle_1)
 
@@ -84,12 +88,13 @@ export function Avatar(props) {
   idle_4[0].name = "idle_4";
   idle_5[0].name = "idle_5";
   idle_6[0].name = "idle_6";
+  waving[0].name = "waving";
 
-  const [animation, setAnimation] = useState("idle_4");
+  const [animation, setAnimation] = useState("waving");
 
   const group = useRef();
   const { actions } = useAnimations(
-    [idle_1[0], idle_2[0], idle_3[0], idle_4[0], idle_4[0], idle_6[0]],
+    [idle_1[0], idle_2[0], idle_3[0], idle_4[0], idle_4[0], idle_6[0], waving[0]],
     group
   );
 
@@ -98,20 +103,20 @@ export function Avatar(props) {
 
   // console.log(expression_que.smile_que);
 
-  useEffect(async () => {
-    try {
-      const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
-        dialogue
-      );
+  // //useEffect(async () => {
+  //   try {
+  //     const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
+  //       dialogue
+  //     );
 
-      setaudio_bytes(metadata.soundFile);
-      const duration = metadata.duration;
+  //     setaudio_bytes(metadata.soundFile);
+  //     const duration = metadata.duration;
 
-      debugger;
-    } catch (error) {
-      throw console.error("Error in face detection:", error);
-    }
-  }, []);
+  //     debugger;
+  //   } catch (error) {
+  //     throw console.error("Error in face detection:", error);
+  //   }
+  // }, []);
 
   useEffect(() => {
     actions[animation].reset().fadeIn(0.5).play();
@@ -138,11 +143,11 @@ export function Avatar(props) {
 
   useFrame(() => {
     if (audio.paused || audio.ended) {
-      setAnimation("idle_4");
+      setAnimation("waving");
       return;
     }
 
-    const audio_nodes = avatar_speak(nodes, morphTargetSmoothing, audioBuffer);
+    const audio_nodes = avatar_speak(nodes, morphTargetSmoothing, audio, script);
     nodes = audio_nodes;
   });
 
@@ -222,6 +227,7 @@ export function Avatar(props) {
           skeleton={nodes.AvatarTeethUpper.skeleton}
           material={upperTeethMaterial}
           castShadow
+          onUpdate={(self) => (self.position.y = 0.1)}  // Adjust the Y-coordinate as needed
         />
         <skinnedMesh
           geometry={nodes.haircut.geometry}
