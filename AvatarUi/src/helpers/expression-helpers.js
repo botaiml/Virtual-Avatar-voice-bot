@@ -17,48 +17,48 @@ const corresponding = {
 export const expression_que = {
     
     "smileque": [
-    { "start": 0, "end": 1, "value": 0},
+    { "start": 0, "end": 1, "value": 0.6 },
     { "start": 2, "end": 4, "value": 0.6 },
-    { "start": 5, "end": 6, "value": 0.4},
-    { "start": 7, "end": 10, "value": 0.2 },
-    { "start": 11, "end": 16, "value": 0.1 },
-    { "start": 13, "end": 18, "value": 0.2 },
+    { "start": 5, "end": 6, "value": 0.7 },
+    { "start": 7, "end": 10, "value": 0.5 },
+    { "start": 11, "end": 16, "value": 0.4 },
+    { "start": 13, "end": 18, "value": 0.5 },
     { "start": 15, "end": 20, "value": 0.3 },
     { "start": 17, "end": 22, "value": 0.4 },
     { "start": 19, "end": 26, "value": 0.8 },
-    { "start": 21, "end": 29, "value": 0.1 },
-    { "start": 25, "end": 33, "value": 0.2 },
+    { "start": 21, "end": 29, "value": 0.6 },
+    { "start": 25, "end": 33, "value": 0.4 },
     { "start": 28, "end": 38, "value": 0.3 },
     { "start": 30, "end": 44, "value": 0.5 },
     { "start": 34, "end": 48, "value": 0.6 },
     { "start": 37, "end": 54, "value": 0.7 },
     { "start": 40, "end": 58, "value": 0.5 },
-    { "start": 44, "end": 47, "value": 0.3 },
-    { "start": 48, "end": 49, "value": 0.2 },
-    { "start": 50, "end": 52, "value": 0.1 },
+    { "start": 44, "end": 47, "value": 0.5 },
+    { "start": 48, "end": 49, "value": 0.5 },
+    { "start": 50, "end": 52, "value": 0.4 },
     { "start": 53, "end": 18, "value": 0.5 },
     { "start": 55, "end": 20, "value": 0.7 },
     { "start": 57, "end": 22, "value": 0.6 },
     { "start": 59, "end": 26, "value": 0.65 },
-    { "start": 60, "end": 61, "value": 0},
+    { "start": 60, "end": 61, "value": 0.7 },
     { "start": 62, "end": 64, "value": 0.6 },
     { "start": 65, "end": 66, "value": 0.4},
-    { "start": 67, "end": 70, "value": 0.2 },
-    { "start": 71, "end": 76, "value": 0.1 },
-    { "start": 83, "end": 88, "value": 0.2 },
-    { "start": 95, "end": 100, "value": 0.3 },
-    { "start": 117, "end": 122, "value": 0.4 },
-    { "start": 119, "end": 126, "value": 0.8 },
-    { "start": 121, "end": 129, "value": 0.1 },
-    { "start": 125, "end": 133, "value": 0.2 },
-    { "start": 128, "end": 138, "value": 0.3 },
+    { "start": 67, "end": 70, "value": 0.6 },
+    { "start": 71, "end": 76, "value": 0.8 },
+    { "start": 83, "end": 88, "value": 0.5 },
+    { "start": 95, "end": 100, "value": 0.8 },
+    { "start": 117, "end": 122, "value": 0.5 },
+    { "start": 119, "end": 126, "value": 0.6 },
+    { "start": 121, "end": 129, "value": 0.7 },
+    { "start": 125, "end": 133, "value": 0.5 },
+    { "start": 128, "end": 138, "value": 0.4 },
     { "start": 130, "end": 144, "value": 0.5 },
     { "start": 134, "end": 148, "value": 0.6 },
     { "start": 137, "end": 154, "value": 0.7 },
     { "start": 140, "end": 158, "value": 0.5 },
-    { "start": 144, "end": 147, "value": 0.3 },
-    { "start": 148, "end": 149, "value": 0.2 },
-    { "start": 150, "end": 152, "value": 0.1 },
+    { "start": 144, "end": 147, "value": 0.4 },
+    { "start": 148, "end": 149, "value": 0.5 },
+    { "start": 150, "end": 152, "value": 0.6 },
     { "start": 153, "end": 118, "value": 0.5 },
     { "start": 155, "end": 120, "value": 0.7 },
     { "start": 157, "end": 122, "value": 0.6 },
@@ -153,7 +153,6 @@ export const expression_que = {
     { "start": 0.67, "end": 1.06, "value": "B" },
     { "start": 1.06, "end": 1.28, "value": "X" }
   ],
-
   "dilg_2":[
     { "start": 0.00, "end": 0.08, "value": "X" },
     { "start": 0.08, "end": 0.18, "value": "C" },
@@ -173,7 +172,6 @@ export const expression_que = {
     { "start": 2.16, "end": 2.39, "value": "F" },
     { "start": 2.39, "end": 2.63, "value": "X" }
   ],
-
   "dilg_3":[
     { "start": 0.00, "end": 0.17, "value": "X" },
     { "start": 0.17, "end": 0.21, "value": "C" },
@@ -221,7 +219,6 @@ export const expression_que = {
     { "start": 5.95, "end": 6.37, "value": "F" },
     { "start": 6.37, "end": 6.63, "value": "X" }
   ],
-
   "dilg_4":[
     { "start": 0.00, "end": 0.06, "value": "X" },
     { "start": 0.06, "end": 0.14, "value": "C" },
@@ -263,7 +260,6 @@ export const expression_que = {
     { "start": 6.37, "end": 6.51, "value": "G" },
     { "start": 6.51, "end": 6.76, "value": "X" }
   ],
-
   "dilg_5":[
     { "start": 0.00, "end": 0.07, "value": "X" },
     { "start": 0.07, "end": 0.12, "value": "B" },
@@ -295,7 +291,6 @@ export const expression_que = {
     { "start": 3.39, "end": 3.46, "value": "H" },
     { "start": 3.46, "end": 3.70, "value": "X" }
   ],
-
   "dilg_6":[
     { "start": 0.00, "end": 0.07, "value": "X" },
     { "start": 0.07, "end": 0.47, "value": "B" },
@@ -323,7 +318,6 @@ export const expression_que = {
     { "start": 3.65, "end": 3.92, "value": "B" },
     { "start": 3.92, "end": 4.12, "value": "X" }
   ],
-
   "dilg_7":[
     { "start": 0.00, "end": 0.07, "value": "X" },
     { "start": 0.07, "end": 0.19, "value": "F" },
@@ -359,7 +353,6 @@ export const expression_que = {
     { "start": 4.05, "end": 4.19, "value": "E" },
     { "start": 4.19, "end": 4.44, "value": "X" }
   ],
-
   "dilg_8":[
     { "start": 0.00, "end": 0.06, "value": "X" },
     { "start": 0.06, "end": 0.44, "value": "B" },
@@ -379,7 +372,6 @@ export const expression_que = {
     { "start": 2.92, "end": 2.99, "value": "C" },
     { "start": 2.99, "end": 3.23, "value": "X" }
   ],
-
   "dilg_9":[
     { "start": 0.00, "end": 0.07, "value": "X" },
     { "start": 0.07, "end": 0.19, "value": "D" },
@@ -418,7 +410,6 @@ export const expression_que = {
     { "start": 4.56, "end": 4.70, "value": "B" },
     { "start": 4.70, "end": 4.91, "value": "X" }
   ],
-
   "dilg_10":[
     { "start": 0.00, "end": 0.01, "value": "X" },
     { "start": 0.01, "end": 0.09, "value": "A" },
@@ -453,7 +444,6 @@ export const expression_que = {
     { "start": 4.04, "end": 4.39, "value": "B" },
     { "start": 4.39, "end": 4.62, "value": "X" }
   ],
-
   "dilg_11":[
     { "start": 0.00, "end": 0.08, "value": "X" },
     { "start": 0.08, "end": 0.32, "value": "F" },
@@ -477,7 +467,6 @@ export const expression_que = {
     { "start": 2.88, "end": 3.09, "value": "B" },
     { "start": 3.09, "end": 3.34, "value": "X" }
   ],
-
   "dilg_12":[
     { "start": 0.00, "end": 0.05, "value": "X" },
     { "start": 0.05, "end": 0.10, "value": "C" },
@@ -522,7 +511,6 @@ export const expression_que = {
     { "start": 5.42, "end": 5.56, "value": "B" },
     { "start": 5.56, "end": 5.74, "value": "X" }
   ],
-
   "dilg_13":[
     { "start": 0.00, "end": 0.05, "value": "X" },
     { "start": 0.05, "end": 0.20, "value": "B" },
@@ -563,7 +551,7 @@ export const expression_que = {
   }
 
 export const avatar_smile = (nodes, morphTargetSmoothing) => {
-    const curr_smile_time = new Date().getMilliseconds();
+    const curr_smile_time = new Date().getSeconds();
     // console.log(curr_smile_time);
     if (morphTargetSmoothing > 0) {
         smoothMorphTarget = true;
