@@ -46,7 +46,6 @@ export function Avatar(props) {
     if (!audio_bytes) return null;
     return createAudioFromBase64(audio_bytes);
   }, [audio_bytes]);
-  debugger;
 
   // const audio = useMemo(() => {
   //   if (!audio_bytes) return null;
