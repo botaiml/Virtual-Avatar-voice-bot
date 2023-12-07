@@ -11,7 +11,7 @@
 
 from src import text_to_speech
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import PlainTextResponse
+from fastapi.responses import PlainTextResponse, FileResponse, StreamingResponse, JSONResponse
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -19,6 +19,7 @@ import subprocess
 import uvicorn
 import wave
 import io
+import base64
 
 app = FastAPI(debug=True, docs_url='/text2speech/docs', redoc_url='/text2speech/redocs',openapi_url='/text2speech/openapi.json')
 origins = ["*"]
@@ -54,7 +55,25 @@ def wav_to_bytes(file_path):
         params = wave_file.getparams()
         byte_data = io.BytesIO(frames)
         return byte_data.getvalue(), params
+
+def wav_to_b64(file_path):
+    try:
+        with open(file_path, 'rb') as audio_file:
+            # Read the audio file content
+            audio_content = audio_file.read()
+
+            # Convert the audio content to base64 string
+            base64_audio = base64.b64encode(audio_content).decode('utf-8')
+
+            return base64_audio
+        
+    except FileNotFoundError:
+        print("File not found. Please provide a valid file path.")
+        return None
     
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        return None
 
 
 def generate_lip_sync_json(input_audio_file, output_json_file, language='english'):
@@ -65,7 +84,7 @@ def generate_lip_sync_json(input_audio_file, output_json_file, language='english
         language_option = '-r phonetic'  # Non-English recordings
 
     command = [
-        './src/Rhubarb/rhubarb',           # Path to the rhubarb executable
+        './PythonBackend/src/AudioToVissemes/Rhubarb-Lip-Sync-1.13.0-Linux/rhubarb', # Path to the rhubarb executable
         '-o', output_json_file,     # Output JSON file
         '-f', 'json',          # Output format as JSON
         language_option, 
@@ -90,23 +109,34 @@ async def text_to_speech(Request: request):
     if not Request.text:
         raise HTTPException(status_code=400, detail="Input text is required")
 
-    audio_buf = TTS.text_to_speech(Request)
-    audio_byte_data, wav_params = wav_to_bytes(audio_buf)
-    generate_lip_sync_json(audio_buf, 'output.txt')
+    audio_file_path = TTS.text_to_speech(Request)
+    # audio_byte_data, wav_params = wav_to_bytes(audio_buf)
+    generate_lip_sync_json(audio_file_path, 'output.txt')
+    # file = open("output.txt", "r")
+    audio_b64 = wav_to_b64(audio_file_path)
 
     import json
     with open('output.txt', 'r') as file:
         original_json_string = file.read()
 
     data = json.loads(original_json_string)
-    new_sound_file = str(audio_byte_data)
-    data['metadata']['soundFile'] = new_sound_file
-    modified_json_string = json.dumps(data, indent=2)
-    with open('test.txt', 'w') as file:
-        file.write(modified_json_string)
-    file = open("test.txt", "r")
-    return PlainTextResponse(file.read())
+    # new_sound_file = str(audio_byte_data)
+    data['metadata']['soundFile'] = audio_b64
+    # modified_json_string = json.dumps(data, indent=2)
+    # with open('test.txt', 'w') as file:
+    #     file.write(modified_json_string)
+    # with open("test.txt", "r") as file:
+    #     data = json.load(file)
     
+    # print(data)
+    return JSONResponse(data)
+    # return PlainTextResponse(file.read())
+   
+
+
+
+
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8008, log_level="info")
