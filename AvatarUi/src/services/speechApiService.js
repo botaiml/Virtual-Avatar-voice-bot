@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const API_URL = "http://localhost:8008";
+const API_URL = import.meta.env.VITE_TTS_API_URL;
 
 const speech_request_body = {
   text: " ",
@@ -21,21 +20,24 @@ export const SpeechApiService = {
   getSpeechData: async (text) => {
     speech_request_body.text = text;
     try {
-      console.log("Speech Api url is ");
-      console.log(`${API_URL}/text2speech`);
-      const response = await axios.post(
-        `${API_URL}/text2speech`,
-        speech_request_body,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      return response.data;
+      // const response = await axios.post(
+      //   `${API_URL}/text2speech`,
+      //   speech_request_body,
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
+      // return response.data;
+      const fallbackFilePath = "./src/services/txt.json";
+      const fallbackResponse = await fetch(fallbackFilePath);
+      const fallbackData = await fallbackResponse.json();
+      return fallbackData;
     } catch (error) {
       // Handle errors, log them, or throw an exception
       console.error("Error in SpeechService", error);
+
       throw error;
     }
   },

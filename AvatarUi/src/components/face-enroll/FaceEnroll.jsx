@@ -170,7 +170,7 @@ export default function FaceEnroll() {
       });
 
       faceapi.draw.drawDetections(canvas, resizedDetection);
-      if (detection.score > 0.75) {
+      if (detection.score > import.meta.env.VITE_FACERECON_THRESHOLD) {
         setCanCapture(true);
       } else {
         setCanCapture(false);

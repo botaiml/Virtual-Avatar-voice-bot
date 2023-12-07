@@ -22,16 +22,24 @@ import {
   avatar_smile,
   avatar_blink,
   avatar_speak,
+  updateMouthqueDefault,
 } from "../helpers/expression-helpers";
 import axios from "axios";
 import { SpeechApiService } from "../services/speechApiService";
+import { createAudioFromBase64 } from "../helpers/base64toaudio-helper";
+import { useDispatch, useSelector } from "react-redux";
+import { INITIALISE as InitAudioData } from "../store/actions/audioData";
+import { INITIALISE as InitAudioStatus } from "../store/actions/audioStatus";
 
 export function Avatar(props) {
-  // const [audio_bytes, setaudio_bytes] = useState();
+  const [audio_bytes, setaudio_bytes] = useState();
+  const dispatch = useDispatch();
+  const { audio_byte, mouthque } = useSelector((state) => state.audioData);
+
   // const { nodes, materials, scene } = useGLTF("/models/Avatar.glb");
   const { playAudio, script, morphTargetSmoothing, smoothMorphTarget } =
     useControls({
-      playAudio: false,
+      playAudio: true,
       smoothMorphTarget: true,
       morphTargetSmoothing: 0.2,
       script: {
@@ -42,19 +50,11 @@ export function Avatar(props) {
 
   const headFollow = true;
 
-  const audio = useMemo(() => new Audio(`/audios/${script}.mp3`), [script]);
-  // const audioBuffer = useMemo(() => {
-  //   if (!audio_bytes) return null;
-  //   console.log("INTO AUDIO BUFFER")
-  //   // Convert audio bytes to an audio buffer
-  //   const audioContext = new (window.AudioContext ||
-  //     window.webkitAudioContext)();
-  //   return new Promise((resolve) => {
-  //     audioContext.decodeAudioData(audio_bytes, (buffer) => {
-  //       resolve(buffer);
-  //     });
-  //   });
-  // }, [audio_bytes]);
+  // const audio = useMemo(() => new Audio(`/audios/${script}.mp3`), [script]);
+  const audio = useMemo(() => {
+    if (!audio_bytes) return null;
+    return createAudioFromBase64(audio_bytes);
+  }, [audio_bytes]);
 
 
   useEffect(() => {
@@ -69,6 +69,15 @@ export function Avatar(props) {
     GLTFLoader,
     "models/Avatar_2.glb"
   );
+
+  useEffect(() => {
+    if (audio_byte && mouthque) {
+      console.log("RECVIDED AUDIO DATA");
+      setaudio_bytes(audio_byte);
+      updateMouthqueDefault(mouthque);
+    }
+  }, [audio_byte, mouthque]);
+
   materials.skinning = true;
   // const { nodes, materials, scene } = useGLTF('/model.gltf');
 
@@ -102,21 +111,20 @@ export function Avatar(props) {
   const dialogue =
     "Hello, I am a virtual Avatar a bot designed by Integra Private Limited";
 
-  // console.log(expression_que.smile_que);
+  // useEffect(() => {
+  //   const speechData = async () => {
+  //     try {
+  //       const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
+  //         dialogue
+  //       );
+  //       setaudio_bytes(metadata.soundFile);
+  //       updateMouthqueDefault(mouthCues);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   speechData();
 
-  // //useEffect(async () => {
-  //   try {
-  //     const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
-  //       dialogue
-  //     );
-
-  //     setaudio_bytes(metadata.soundFile);
-  //     const duration = metadata.duration;
-
-  //     debugger;
-  //   } catch (error) {
-  //     throw console.error("Error in face detection:", error);
-  //   }
   // }, []);
 
   useEffect(() => {
@@ -143,9 +151,20 @@ export function Avatar(props) {
   });
 
   useFrame(() => {
-    if (audio.paused || audio.ended) {
-      setAnimation("waving");
-      return;
+    if (audio_bytes) {
+      if (audio.paused || audio.ended) {
+        console.log("IDLE");
+        setAnimation("idle_4");
+        return;
+      }
+      console.log("SPEAKING");
+      const audio_nodes = avatar_speak(
+        nodes,
+        morphTargetSmoothing,
+        audio,
+        "default"
+      );
+      nodes = audio_nodes;
     }
 
     const audio_nodes = avatar_speak(nodes, morphTargetSmoothing, audio, script);

@@ -1,18 +1,13 @@
 import { useRef, useEffect, useState } from "react";
 import styles from "./FaceRecon.module.css";
 import * as faceapi from "face-api.js";
-import DeleteIcon from "@mui/icons-material/Delete";
 import faceApiService from "../../services/faceApiService";
-import SimpleBackdrop from "../SimpleLoader";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createActivityConfig as activityConfig } from "../../helpers/activity-helper";
-import {
-  ENROLLFACE,
-  ENROLLUSER,
-  SEARCHFACE,
-} from "../../store/actions/activity";
+import { ENROLLFACE, SEARCHFACE } from "../../store/actions/activity";
 import SnackBar from "../SnackBar";
-
+import { SpeechApiService } from "../../services/speechApiService";
+import { INITIALISE as InitAudioData } from "../../store/actions/audioData";
 function FaceReconize() {
   const videoRef = useRef();
   const canvasRef = useRef();
@@ -56,6 +51,14 @@ function FaceReconize() {
           open: true,
           message: "Welcome, Moving into appointments",
         });
+        let text = "Welcome, Moving into appointments";
+        const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
+          text
+        );
+        dispatch({
+          type: InitAudioData,
+          payload: { audio_byte: metadata.soundFile, mouthque: mouthCues },
+        });
         dispatch({
           type: SEARCHFACE,
           payload: activityConfig(2, { indexId: result.indexid }),
@@ -67,12 +70,29 @@ function FaceReconize() {
           setCapturedFaces([]);
           setisCaptured(() => false);
           setNotify({ open: true, message: "Please straighten up your face" });
+          // TODO play audio here
+          let text = "Please straighten up your face";
+          const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
+            text
+          );
+          dispatch({
+            type: InitAudioData,
+            payload: { audio_byte: metadata.soundFile, mouthque: mouthCues },
+          });
         } else if (result.error === "Face is not enrolled") {
           // face is not enrolled
           // hanlde nagivation to face enrollment
           setNotify({
             open: true,
             message: "Face is not enrolled, Moving into enrollment",
+          });
+          let text = "Face is not enrolled, Moving into enrollment";
+          const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
+            text
+          );
+          dispatch({
+            type: InitAudioData,
+            payload: { audio_byte: metadata.soundFile, mouthque: mouthCues },
           });
           /*chaging state to enrollface*/
           dispatch({
@@ -85,7 +105,9 @@ function FaceReconize() {
     if (isCaptured) {
       setBackdropOpen(true);
       // API call to search for face
-      searchFace();
+      setTimeout(() => {
+        searchFace();
+      }, 3000);
     }
   }, [isCaptured]);
 
@@ -185,7 +207,7 @@ function FaceReconize() {
       });
 
       faceapi.draw.drawDetections(canvas, resizedDetection);
-      if (detection.score > 0.75) {
+      if (detection.score > import.meta.env.VITE_FACERECON_THRESHOLD) {
         setCanCapture(true);
       } else {
         setCanCapture(false);
