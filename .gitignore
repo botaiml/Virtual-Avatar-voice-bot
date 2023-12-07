@@ -29,7 +29,7 @@ AvatarUi/public/audios/hello.mp3
 AvatarUi/public/audios/hello.ogg
 AvatarUi/public/models/*.glb
 AvatarUi/public/vite.svg
-bkp.jsx
+bkp*.jsx
 .gitignore
 FaceRecognizer/face_recognizer.log
 FaceRecognizer/__pycache__/debug_server.cpython-37.pyc

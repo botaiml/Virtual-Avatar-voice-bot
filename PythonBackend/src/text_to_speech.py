@@ -1,14 +1,14 @@
 #text to speech class
 #visme
-import src.tts  as tts
+import src.tts as tt 
 import librosa
 import noisereduce as nr
 import soundfile as sf
 
 
-en_model = './src/models/v3_en_indic.pt'
-indic_model = './src/models/v3_indic.pt'
-TTS = tts.TextToSpeechService()
+en_model = '/home/ravi/Documents/Workspace/text2speech/Virtual-Avatar-voice-bot/PythonBackend/src/models/v3_en_indic.pt'
+indic_model = '/home/ravi/Documents/Workspace/text2speech/Virtual-Avatar-voice-bot/PythonBackend/src/models/v3_en_indic.pt'
+TTS = tt.TextToSpeechService()
 
 class TTSModule:
     def __init__(self):
@@ -20,11 +20,16 @@ class TTSModule:
         print("indic_tts model is loaded.............................")
     
     def text_to_speech(self, request):
+        # audio_buf = TTS.text_to_speech(request["text"], request["languages"], request["pitch"], request["rate"], request["audio_format"], 
+        #                 request["en_speaker"], request["indic_speaker"], request["db_value"], request["dot_break_time"], 
+        #                 request["question_break_time"], request["commas_break_time"], 
+        #                 request["exclaimtory_break_time"])
         audio_buf = TTS.text_to_speech(request.text, request.languages, request.pitch, request.rate, request.audio_format, 
-                        request.en_speaker, request.indic_speaker, request.db_value, request.dot_break_time, 
-                        request.question_break_time, request.commas_break_time, 
-                        request.exclaimtory_break_time)
+                    request.en_speaker, request.indic_speaker, request.db_value, request.dot_break_time, 
+                    request.question_break_time, request.commas_break_time, 
+                    request.exclaimtory_break_time)
         
+        print("audio_buf:", audio_buf)
         # For noise reduction
         y, sr = librosa.load(audio_buf, sr=None)
         reduced_noise = nr.reduce_noise(y=y, sr=sr)
@@ -34,25 +39,25 @@ class TTSModule:
         sf.write(output_file, reduced_noise, sr)
         return output_file
 
-# an instance of TTSModule
-task = TTSModule()
+# # an instance of TTSModule
+# task = TTSModule()
 
-# Example for request dictionary
-request = {
-    "text": "today is bank holiday.",
-    "languages": "English",
-    "pitch": "medium",
-    "rate": "medium",
-    "audio_format": "wav",
-    "en_speaker": "hindi_female",
-    "indic_speaker": "kannada_female",
-    "db_value": "5",
-    "dot_break_time": "0.5",
-    "question_break_time": "0.6",
-    "commas_break_time": "0.2",
-    "exclaimtory_break_time": "0.4"
-}
+# # Example for request dictionary
+# request = {
+    # "text": "today is bank holiday.",
+    # "languages": "English",
+    # "pitch": "medium",
+    # "rate": "medium",
+    # "audio_format": "wav",
+    # "en_speaker": "hindi_female",
+    # "indic_speaker": "kannada_female",
+    # "db_value": "5",
+    # "dot_break_time": "0.5",
+    # "question_break_time": "0.6",
+    # "commas_break_time": "0.2",
+    # "exclaimtory_break_time": "0.4"
+# }
 
-# result_file = task.text_to_speech(request)
+# #result_file = task.text_to_speech(request)
 # print(f"Generated audio file: {result_file}")
 

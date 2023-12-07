@@ -1,10 +1,15 @@
 # Use an official Node runtime as a parent image
-FROM node:14
+FROM ubuntu:22.04
 
+Run apt update
+Run apt install -y nodejs
+Run apt install -y npm
+
+
+COPY package*.json /app/
 
 WORKDIR /app
 
-COPY package*.json ./
 RUN npm install
 # Set the working directory to /app
 

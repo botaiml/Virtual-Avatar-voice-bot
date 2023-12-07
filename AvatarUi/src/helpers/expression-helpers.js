@@ -61,6 +61,7 @@ export const expression_que = {
     { start: 155, end: 120, value: 0.7 },
     { start: 157, end: 122, value: 0.6 },
     { start: 159, end: 126, value: 0.65 },
+
   ],
   blinkque: [
     { start: 0, end: 500, value: 0 },
@@ -521,6 +522,7 @@ export const expression_que = {
       { start: 5.56, end: 5.74, value: "X" },
     ],
 
+
     dilg_13: [
       { start: 0.0, end: 0.05, value: "X" },
       { start: 0.05, end: 0.2, value: "B" },
@@ -572,6 +574,7 @@ export const avatar_smile = (nodes, morphTargetSmoothing) => {
     1: "mouthSmileRight",
     2: "mouthSmileLeft",
   };
+
 
   Object.values(used_keys).forEach((value) => {
     if (!smoothMorphTarget) {
