@@ -57,49 +57,6 @@ def save_image(image, rest_path):
     # save_image_dir = 'saved_images/'
     cv2.imwrite(os.path.join(rest_path , f'{unique_id}.jpg'), image)
 
-def __image_quality_check_(image):
-
-    get_image_blurry_status = detect_blur_fft(image)
-    get_headpose_status = []
-
-    if not get_image_blurry_status["success"]:
-        return JSONResponse({
-            "success": False,
-            "remarks": RemarksItems["blurryImage"]
-        })
-
-    else:
-        get_image_brightness_status = brightnessdetector.face_brightness_detection(image)
-
-        if not get_image_brightness_status:
-
-            return JSONResponse({
-                "success": False,
-                "remarks": RemarksItems["imageBrightness"]
-            })
-
-        else:
-
-            get_headpose_status = detectheadpose.predict_facePose(image)
-
-            if len(get_headpose_status) > 0:
-                if not get_headpose_status[0] == "straight":
-
-                    return JSONResponse({
-                        "success": False,
-                        "remarks": f'{["headPose" + get_headpose_status[0]]}'
-                    })
-
-                else:
-                    return JSONResponse({
-                        "success": True 
-                    })
-            else:
-                return JSONResponse({
-                        "success": False,
-                        "remarks": "Face not found" 
-                    })
-
 def __face_search__(embedding):
     _, ok = milvus.has_collection(_collection_name)
 
@@ -170,6 +127,9 @@ class  FaceEnrollViewModel(BaseModel):
 
 class CollectionName(BaseModel):
     collection_name:str
+    
+class ImageQualityData(BaseModel):
+    image_b64: str
 
 faceembedding = FaceEmbedding()
 brightnessdetector = BrightnessPredictor()
@@ -191,9 +151,68 @@ _threshold_of_rejection = milvus_config["threshold"]
 milvus = Milvus(_HOST, _PORT, pool_size=milvus_config["pool_size"])
 
 
+def __image_quality_check_(image):
+
+    get_image_blurry_status = detect_blur_fft(image)
+    get_headpose_status = []
+
+    if not get_image_blurry_status["success"]:
+        return JSONResponse({
+            "success": False,
+            "remarks": RemarksItems["blurryImage"]
+        })
+
+    else:
+        get_image_brightness_status = brightnessdetector.face_brightness_detection(image)
+
+        if not get_image_brightness_status:
+
+            return JSONResponse({
+                "success": False,
+                "remarks": RemarksItems["imageBrightness"]
+            })
+
+        else:
+
+            get_headpose_status = detectheadpose.predict_facePose(image)
+
+            if len(get_headpose_status) > 0:
+                if not get_headpose_status[0] == "straight":
+
+                    return JSONResponse({
+                        "success": False,
+                        "remarks": f'{["headPose" + get_headpose_status[0]]}'
+                    })
+
+                else:
+                    return JSONResponse({
+                        "success": True 
+                    })
+            else:
+                return JSONResponse({
+                        "success": False,
+                        "remarks": "Face not found" 
+                    })
+                
+
+    
+    
+
 @app.get('/facerec', include_in_schema=False)
 def index():
     return RedirectResponse('/facerec/docs')
+
+@app.post('/facerec/face-quality')
+async def check_face_quality(data:ImageQualityData):
+    image_cv = __get_cv2_image__(data.image_b64)
+    # print(image_cv)
+    get_image_quality_status = __image_quality_check_(image_cv)
+
+    response = (get_image_quality_status.body).decode("utf8")
+    
+    # __image_quality_check_(__get_cv2_image__(data.image_b64))
+    print(response)
+    return response
 
 @app.post('/facerec/face-enroll')
 async def enroll_data(fileInfo: List[FaceEnrollViewModel]):
