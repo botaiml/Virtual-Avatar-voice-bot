@@ -84,7 +84,7 @@ def generate_lip_sync_json(input_audio_file, output_json_file, language='english
         language_option = '-r phonetic'  # Non-English recordings
 
     command = [
-        './PythonBackend/src/AudioToVissemes/Rhubarb-Lip-Sync-1.13.0-Linux/rhubarb', # Path to the rhubarb executable
+        './PythonBackend/src/AudioToVissemes/Rhubarb/rhubarb', # Path to the rhubarb executable
         '-o', output_json_file,     # Output JSON file
         '-f', 'json',          # Output format as JSON
         language_option, 

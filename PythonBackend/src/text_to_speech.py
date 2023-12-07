@@ -6,8 +6,8 @@ import noisereduce as nr
 import soundfile as sf
 
 
-en_model = '/home/ravi/Documents/Workspace/text2speech/Virtual-Avatar-voice-bot/PythonBackend/src/models/v3_en_indic.pt'
-indic_model = '/home/ravi/Documents/Workspace/text2speech/Virtual-Avatar-voice-bot/PythonBackend/src/models/v3_en_indic.pt'
+en_model = './src/models/v3_en_indic.pt'
+indic_model = './src/models/v3_en_indic.pt'
 TTS = tt.TextToSpeechService()
 
 class TTSModule:
