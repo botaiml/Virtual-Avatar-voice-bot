@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:4000"; // Replace with your actual API endpoint
+const API_URL = import.meta.env.VITE_NDOEBACKEND_APP_API_URL; // Replace with your actual API endpoint
 
 const faceApiService = {
   searchFace: async (imageData) => {
