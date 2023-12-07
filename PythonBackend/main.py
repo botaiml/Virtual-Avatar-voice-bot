@@ -21,7 +21,7 @@ import wave
 import io
 import base64
 
-app = FastAPI(debug=True, docs_url='/text2speech/docs', redoc_url='/text2speech/redocs',openapi_url='/text2speech/openapi.json')
+app = FastAPI(debug=True, docs_url='/text2viseme/docs', redoc_url='/text2viseme/redocs',openapi_url='/text2viseme/openapi.json')
 origins = ["*"]
 
 app.add_middleware(
@@ -99,11 +99,11 @@ def generate_lip_sync_json(input_audio_file, output_json_file, language='english
         print(f"Error: {e}")
 
 
-@app.get('/text2speech', include_in_schema=False)
+@app.get('/text2viseme', include_in_schema=False)
 def index():
-    return RedirectResponse('/text2speech/docs')
+    return RedirectResponse('/text2viseme/docs')
 
-@app.post("/text2speech")
+@app.post("/text2viseme")
 async def text_to_speech(Request: request):
     print(Request)
     if not Request.text:
