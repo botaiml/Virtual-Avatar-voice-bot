@@ -24,7 +24,17 @@ services:
       - "./AvatarUi:/app"
     ports:
       - "5173:5173"
-    command: ["sh", "-c", "npm run dev && while true; do sleep 1; done"]
+    command: 
+    -  /bin/bash
+    -  -c
+    -  |
+        npm run dev
+        i=0
+        while true
+        do
+          sleep 5
+          ((i++))
+        done
 
   node-backend:
     build: NodeBackend
