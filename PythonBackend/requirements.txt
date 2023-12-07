@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+playsound
+ipython
+omegaconf
+pydub
+PyYAML
+torch
+torchaudio
+numpy
+num2words
+aksharamukha
+librosa
+python-multipart
+librosa
+soundfile
+noisereduce

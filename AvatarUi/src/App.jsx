@@ -77,9 +77,9 @@ function App(props) {
         >
           <div style={{ flex: "1", width: "50%", position: "relative" }}>
             {/* <h1>AVATAR</h1> */}
-              {/* <Canvas shadows camera={{position: [0,0,8], fov:50 }}>
+              <Canvas shadows camera={{position: [0,0,8], fov:50 }}>
                 <Experience />
-              </Canvas> */}
+              </Canvas>
           </div>
           <div style={{ flex: "1", width: "50%" }}>
             {eachActivityType && getActivity()}
