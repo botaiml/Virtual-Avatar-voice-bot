@@ -3,6 +3,8 @@ import styles from "./FaceSearch.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import faceApiService from "../../services/faceApiService";
 import { Card, CardContent, Typography, Avatar } from "@mui/material";
+import { INITIALISE as InitAudioData } from "../../store/actions/audioData";
+
 
 export default function FaceSearch() {
   const activity = useSelector((state) => state.activity);
@@ -16,6 +18,14 @@ export default function FaceSearch() {
           activity?.data?.indexId
         );
         setUserData(result.user);
+        let text = `Welcome ${result.user.name}, Moving into appointments`;
+        const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
+          text
+        )        
+        dispatch({
+          type: InitAudioData,
+          payload: { audio_byte: metadata.soundFile, mouthque: mouthCues },
+        });
       } catch (error) {}
     };
     if (activity) getUser();

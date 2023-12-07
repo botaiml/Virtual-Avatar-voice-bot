@@ -20,20 +20,20 @@ export const SpeechApiService = {
   getSpeechData: async (text) => {
     speech_request_body.text = text;
     try {
-      // const response = await axios.post(
-      //   `${API_URL}/text2speech`,
-      //   speech_request_body,
-      //   {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   }
-      // );
-      // return response.data;
-      const fallbackFilePath = "./src/services/txt.json";
-      const fallbackResponse = await fetch(fallbackFilePath);
-      const fallbackData = await fallbackResponse.json();
-      return fallbackData;
+      const response = await axios.post(
+        `${API_URL}/text2viseme`,
+        speech_request_body,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+      // const fallbackFilePath = "./src/services/txt.json";
+      // const fallbackResponse = await fetch(fallbackFilePath);
+      // const fallbackData = await fallbackResponse.json();
+      // return fallbackData;
     } catch (error) {
       // Handle errors, log them, or throw an exception
       console.error("Error in SpeechService", error);

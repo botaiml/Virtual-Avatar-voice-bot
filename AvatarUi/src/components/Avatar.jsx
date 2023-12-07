@@ -76,7 +76,7 @@ export function Avatar(props) {
 
   useEffect(() => {
     if (audio_byte && mouthque) {
-      console.log("RECVIDED AUDIO DATA");
+      console.log("RECVIDED AUDIO DATA", mouthque);
       setaudio_bytes(audio_byte);
       updateMouthqueDefault(mouthque);
     }

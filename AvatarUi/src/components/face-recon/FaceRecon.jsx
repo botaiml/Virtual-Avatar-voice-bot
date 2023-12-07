@@ -49,20 +49,21 @@ function FaceReconize() {
         // handle success implementations TODO
         setNotify({
           open: true,
-          message: "Welcome, Moving into appointments",
+          message: "Welcome , Moving into appointments",
         });
-        let text = "Welcome, Moving into appointments";
-        const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
-          text
-        );
-        dispatch({
-          type: InitAudioData,
-          payload: { audio_byte: metadata.soundFile, mouthque: mouthCues },
-        });
+        // let text = "Welcome, Moving into appointments";
+        // const { metadata, mouthCues } = await SpeechApiService.getSpeechData(
+        //   text
+        // );
         dispatch({
           type: SEARCHFACE,
           payload: activityConfig(2, { indexId: result.indexid }),
         });
+        // dispatch({
+        //   type: InitAudioData,
+        //   payload: { audio_byte: metadata.soundFile, mouthque: mouthCues },
+        // });
+        
       } else {
         if (result.error === "Please traighten up your face") {
           /* face is not straight
@@ -111,7 +112,7 @@ function FaceReconize() {
     }
   }, [isCaptured]);
 
-  useEffect(() => {
+  useEffect(() => { 
     const captureFace = () => {
       // Capture and display face images if score is high enough
       if (capturedFaces.length < 5) {
@@ -123,10 +124,10 @@ function FaceReconize() {
         // Access properties directly from detection.box
         faceCtx.drawImage(
           videoRef.current,
-          detection.box._x,
-          detection.box._y,
-          detection.box._width,
-          detection.box._height,
+          detection.box._x - 50,
+          detection.box._y - 50,
+          detection.box._width + 50,
+          detection.box._height + 50,
           0,
           0,
           100,
