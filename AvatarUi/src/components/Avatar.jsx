@@ -39,7 +39,7 @@ export function Avatar(props) {
     useControls({
       playAudio: true,
       smoothMorphTarget: true,
-      morphTargetSmoothing: 0.2,
+      morphTargetSmoothing: 0.1,
       script: {
         value: "hello",
         options: ["hello"],
@@ -47,6 +47,75 @@ export function Avatar(props) {
     });
 
   const headFollow = true;
+
+
+const facialExpressions = {
+  default: {},
+  smile_1: {
+    browInnerUp: 0.17,
+    eyeSquintLeft: 0.4,
+    eyeSquintRight: 0.44,
+    noseSneerLeft: 0.1700000727403593,
+    noseSneerRight: 0.14000002836874015,
+    mouthPressLeft: 0.61,
+    mouthPressRight: 0.41000000000000003,
+    mouthSmileRight: 0.6,
+    mouthSmileLeft: 0.6
+
+  },
+  smile_2: {
+    browInnerUp: 0.25,
+    eyeSquintLeft: 0.5,
+    eyeSquintRight: 0.5,
+    noseSneerLeft: 0.3,
+    noseSneerRight: 0.3,
+    mouthPressLeft: 0.5,
+    mouthPressRight: 0.5,
+    mouthSmileRight: 0.8,
+    mouthSmileLeft: 0.8
+
+  },
+  smile_3: {
+    browInnerUp: 0.17,
+    eyeSquintLeft: 0.4,
+    eyeSquintRight: 0.44,
+    noseSneerLeft: 0.1700000727403593,
+    noseSneerRight: 0.14000002836874015,
+    mouthPressLeft: 0.61,
+    mouthPressRight: 0.41000000000000003,
+    mouthSmileRight: 0.6,
+    mouthSmileLeft: 0.6
+
+  },
+
+
+  smile_4: {
+    browInnerUp: 0.25,
+    eyeSquintLeft: 0.5,
+    eyeSquintRight: 0.5,
+    noseSneerLeft: 0.3,
+    noseSneerRight: 0.3,
+    mouthPressLeft: 0.5,
+    mouthPressRight: 0.5,
+    mouthSmileRight: 0.8,
+    mouthSmileLeft: 0.8
+  },
+
+
+  smile_5: {
+    browInnerUp: 0.17,
+    eyeSquintLeft: 0.4,
+    eyeSquintRight: 0.44,
+    noseSneerLeft: 0.1700000727403593,
+    noseSneerRight: 0.14000002836874015,
+    mouthPressLeft: 0.61,
+    mouthPressRight: 0.41000000000000003,
+    mouthSmileRight: 0.6,
+    mouthSmileLeft: 0.6
+
+  },
+}
+
 
   // const audio = useMemo(() => new Audio(`/audios/${script}.mp3`), [script]);
   const audio = useMemo(() => {
@@ -71,7 +140,7 @@ export function Avatar(props) {
 
   let { nodes, materials, scene } = useLoader(
     GLTFLoader,
-    "models/Avatar_2.glb"
+    "models/Avatar_3.glb"
   );
 
   useEffect(() => {
@@ -185,6 +254,147 @@ export function Avatar(props) {
 
     return material;
   }, [materials]); //
+
+  const [blink, setBlink] = useState(true);
+  const [smile, setSmile] = useState(0.6)
+  const [facialExpression, setFacialExpression] = useState("");
+
+  const lerpMorphTarget = (target, value, speed = 0.001) => {
+    scene.traverse((child) => {
+      if (child.isSkinnedMesh && child.morphTargetDictionary) {
+        const index = child.morphTargetDictionary[target];
+        if (
+          index === undefined ||
+          child.morphTargetInfluences[index] === undefined
+        ) {
+          return;
+        }
+        child.morphTargetInfluences[index] = THREE.MathUtils.lerp(
+          child.morphTargetInfluences[index],
+          value,
+          speed
+        );
+
+        if (!setupMode) {
+          try {
+            set({
+              [target]: value,
+            });
+          } catch (e) {}
+        }
+      }
+    });
+  };
+
+  const setupMode = false
+  const winkLeft = false
+  const winkRight = false
+
+  
+  useFrame(() => {
+    !setupMode &&
+      Object.keys(nodes.AvatarHead.morphTargetDictionary).forEach((key) => {
+        const mapping = facialExpressions[facialExpression];
+        if (key === "mouthSmileLeft" || key === "mouthSmileRight") {
+          return; // eyes wink/blink are handled separately
+        }
+        if (mapping && mapping[key]) {
+          lerpMorphTarget(key, mapping[key], 0.1);
+        } else {
+          lerpMorphTarget(key, 0, 0.1);
+        }
+      });
+
+    lerpMorphTarget("mouthSmileLeft", smile > 0.4 || winkLeft ? 1 : 0, smile);
+    lerpMorphTarget("mouthSmileRight", smile > 0.4 || winkRight ? 1 : 0, smile);
+    // lerpMorphTarget("mouthSmileLeft", blink || winkLeft ? 1 : 0, 0.5);
+    // lerpMorphTarget("mouthSmileRight", blink || winkRight ? 1 : 0, 0.5);
+
+    // LIPSYNC
+    if (setupMode) {
+      return;
+    }
+  })
+
+  useFrame(() => {
+    !setupMode &&
+      Object.keys(nodes.AvatarHead.morphTargetDictionary).forEach((key) => {
+        const mapping = facialExpressions[facialExpression];
+        if (key === "eyeBlinkLeft" || key === "eyeBlinkRight" || key === "eyeSquintLeft" || key === "eyeSquintRight") {
+          return; // eyes wink/blink are handled separately
+        }
+        if (mapping && mapping[key]) {
+          lerpMorphTarget(key, mapping[key], 0.5);
+        } else {
+          lerpMorphTarget(key, 0, 0.5);
+        }
+      });
+
+    lerpMorphTarget("eyeBlinkLeft", blink || winkLeft ? 1 : 0, 0.5);
+    lerpMorphTarget("eyeBlinkRight", blink || winkRight ? 1 : 0, 0.5);
+    // lerpMorphTarget("eyeSquintLeft", blink || winkLeft ? 1 : 0, 0.5);
+    // lerpMorphTarget("eyeSquintRight", blink || winkRight ? 1 : 0, 0.5);
+
+    // LIPSYNC
+    if (setupMode) {
+      return;
+    }
+
+    // const appliedMorphTargets = [];
+    // if (message && lipsync) {
+    //   const currentAudioTime = audio.currentTime;
+    //   for (let i = 0; i < lipsync.mouthCues.length; i++) {
+    //     const mouthCue = lipsync.mouthCues[i];
+    //     if (
+    //       currentAudioTime >= mouthCue.start &&
+    //       currentAudioTime <= mouthCue.end
+    //     ) {
+    //       appliedMorphTargets.push(corresponding[mouthCue.value]);
+    //       lerpMorphTarget(corresponding[mouthCue.value], 1, 0.2);
+    //       break;
+    //     }
+    //   }
+    // }
+
+    // Object.values(corresponding).forEach((value) => {
+    //   if (appliedMorphTargets.includes(value)) {
+    //     return;
+    //   }
+    //   lerpMorphTarget(value, 0, 0.1);
+    // });
+  });
+
+  useEffect(() => {
+    let blinkTimeout;
+    const nextBlink = () => {
+      blinkTimeout = setTimeout(() => {
+        setBlink(true);
+        setTimeout(() => {
+          setBlink(false);
+          nextBlink();
+        }, 100);
+      }, THREE.MathUtils.randInt(2000, 10000));
+    };
+    nextBlink();
+    return () => clearTimeout(blinkTimeout);
+  }, []);
+
+  useEffect(() => {
+    let smileTimeout;
+    const nextSmile = () => {
+      smileTimeout = setTimeout(() => {
+        setSmile(THREE.MathUtils.randFloat(0.6, 1));
+        setTimeout(() => {
+          setSmile(THREE.MathUtils.randFloat(0.4, 0.6));
+          nextSmile();
+        }, 1000);
+      }, THREE.MathUtils.randInt(2000, 6000));
+    };
+    nextSmile();
+    return () => clearTimeout(smileTimeout);
+  }, []);
+
+
 
   return (
     <group {...props} dispose={null} ref={group}>

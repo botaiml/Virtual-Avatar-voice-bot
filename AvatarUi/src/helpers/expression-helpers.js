@@ -15,52 +15,9 @@ const corresponding = {
 
 export const expression_que = {
   smileque: [
-    { start: 0, end: 1, value: 0 },
-    { start: 2, end: 4, value: 0.6 },
-    { start: 5, end: 6, value: 0.4 },
-    { start: 7, end: 10, value: 0.2 },
-    { start: 11, end: 16, value: 0.1 },
-    { start: 13, end: 18, value: 0.2 },
-    { start: 15, end: 20, value: 0.3 },
-    { start: 17, end: 22, value: 0.4 },
-    { start: 19, end: 26, value: 0.8 },
-    { start: 21, end: 29, value: 0.1 },
-    { start: 25, end: 33, value: 0.2 },
-    { start: 28, end: 38, value: 0.3 },
-    { start: 30, end: 44, value: 0.5 },
-    { start: 34, end: 48, value: 0.6 },
-    { start: 37, end: 54, value: 0.7 },
-    { start: 40, end: 58, value: 0.5 },
-    { start: 44, end: 47, value: 0.3 },
-    { start: 48, end: 49, value: 0.2 },
-    { start: 50, end: 52, value: 0.1 },
-    { start: 53, end: 18, value: 0.5 },
-    { start: 55, end: 20, value: 0.7 },
-    { start: 57, end: 22, value: 0.6 },
-    { start: 59, end: 26, value: 0.65 },
-    { start: 60, end: 61, value: 0 },
-    { start: 62, end: 64, value: 0.6 },
-    { start: 65, end: 66, value: 0.4 },
-    { start: 67, end: 70, value: 0.2 },
-    { start: 71, end: 76, value: 0.1 },
-    { start: 83, end: 88, value: 0.2 },
-    { start: 95, end: 100, value: 0.3 },
-    { start: 117, end: 122, value: 0.4 },
-    { start: 119, end: 126, value: 0.8 },
-    { start: 121, end: 129, value: 0.1 },
-    { start: 125, end: 133, value: 0.2 },
-    { start: 128, end: 138, value: 0.3 },
-    { start: 130, end: 144, value: 0.5 },
-    { start: 134, end: 148, value: 0.6 },
-    { start: 137, end: 154, value: 0.7 },
-    { start: 140, end: 158, value: 0.5 },
-    { start: 144, end: 147, value: 0.3 },
-    { start: 148, end: 149, value: 0.2 },
-    { start: 150, end: 152, value: 0.1 },
-    { start: 153, end: 118, value: 0.5 },
-    { start: 155, end: 120, value: 0.7 },
-    { start: 157, end: 122, value: 0.6 },
-    { start: 159, end: 126, value: 0.65 },
+    { start: 0, end: 20, value: 0.6 },
+    { start: 501, end: 520, value: 0.6 },
+
 
   ],
   blinkque: [
@@ -580,10 +537,10 @@ export const avatar_smile = (nodes, morphTargetSmoothing) => {
     if (!smoothMorphTarget) {
       nodes.AvatarHead.morphTargetInfluences[
         nodes.AvatarHead.morphTargetDictionary[value]
-      ] = 0;
+      ] = 0.5;
       nodes.AvatarTeethLower.morphTargetInfluences[
         nodes.AvatarTeethLower.morphTargetDictionary[value]
-      ] = 0;
+      ] = 0.5;
     } else {
       nodes.AvatarHead.morphTargetInfluences[
         nodes.AvatarHead.morphTargetDictionary[value]
@@ -591,7 +548,7 @@ export const avatar_smile = (nodes, morphTargetSmoothing) => {
         nodes.AvatarHead.morphTargetInfluences[
           nodes.AvatarHead.morphTargetDictionary[value]
         ],
-        0,
+        0.5,
         morphTargetSmoothing
       );
 
@@ -601,7 +558,7 @@ export const avatar_smile = (nodes, morphTargetSmoothing) => {
         nodes.AvatarTeethLower.morphTargetInfluences[
           nodes.AvatarTeethLower.morphTargetDictionary[value]
         ],
-        0,
+        0.5,
         morphTargetSmoothing
       );
     }
